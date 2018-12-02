@@ -9,8 +9,6 @@
 ### NLTK's Stanfords CoreNLP wrapper - https://github.com/nltk/nltk/wiki/Stanford-CoreNLP-API-in-NLTK
 
 import os
-import sys
-import re
 import numpy as np
 
 
