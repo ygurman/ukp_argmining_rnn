@@ -9,10 +9,12 @@ import os
 import numpy as np
 import pickle
 import sys
+from typing import Dict, List
 
 UNK_TOKEN_SYMBOL = "UNKNOWN_TOKEN"
+PAD_SYMBOL = "PAD_SYM"
 torch.manual_seed(361)
-
+np.random.seed(361)
 
 # utility function for input preparation
 def prepare_sequence(seq:[str], to_ix:dict) -> torch.tensor:
@@ -40,7 +42,7 @@ def build_vocabularies(data_path,train_file_names):
 
     # iterate over the pre-processed conll-like data to build vocabulary
     for essay in train_file_names:
-        essay_path = os.path.join(data_path,"data","processed",essay + ".tsv")
+        essay_path = os.path.join(data_path,"processed",essay + ".tsv")
         with open(essay_path,"rt") as f:
             for line in f:
                 if line[0] == "#":
@@ -58,10 +60,15 @@ def build_vocabularies(data_path,train_file_names):
     rel_2ix = dict((w, i) for i, w in enumerate(ac_rel_voc))
 
     # save the vocabs to processed data folder for later use
+    voc_dir = os.path.abspath(os.path.join("..","data","vocabularies"))
+    if not os.path.exists(voc_dir):
+        os.mkdir(voc_dir)
     for name, dic in (("word_2ix", word2ix), ("pos2ix", pos2ix), ("ac_tag2ix", ac_tag2ix), ("ac_rel2ix", rel_2ix)):
-        pickle.dump(dic,open(os.path.join(data_path,"processed",name + ".pcl"),"wb"))
+        pickle.dump(dic,open(os.path.join(data_path,"vocabularies",name + ".pcl"),"wb"))
 
+    sys.stdout.write("wrote vocabularies to {}\n".format(os.path.abspath(voc_dir)))
     return word2ix, pos2ix, ac_tag2ix, rel_2ix
+
 
 # use the original train-test split supplied with the UKP dataset
 def get_train_test_split(split_path) -> ([str] , [str]):
@@ -81,6 +88,7 @@ def get_train_test_split(split_path) -> ([str] , [str]):
             else:
                 test_set.append(name)
     return train_set, test_set
+
 
 def prepare_glove_embeddings(glove_embds_path, glove_txt_name):
     """
@@ -106,62 +114,74 @@ def prepare_glove_embeddings(glove_embds_path, glove_txt_name):
             vectors.append(embd)
 
     sys.stdout.write("saving files to {}\n".format(glove_embds_path))
-    pickle.dump(words,open(os.path.join(glove_embds_path,glove_txt_name.replace(".txt","_words.pcl")),"wb"))
-    pickle.dump(word2ix, open(os.path.join(glove_embds_path, glove_txt_name.replace(".txt", "_word2ix.pcl")), "wb"))
+    pickle.dump(words,open(os.path.join(glove_embds_path,glove_txt_name.replace(".txt","_words_lst.pcl")),"wb"))
+    pickle.dump(word2ix, open(os.path.join(glove_embds_path, glove_txt_name.replace(".txt", "_word2ix_dict.pcl")), "wb"))
 
     glove_embds = {w: vectors[word2ix[w]] for w in words}
-    pickle.dump(glove_embds, open(os.path.join(glove_embds_path, glove_txt_name.replace(".txt", "_vectors.pcl")), "wb"))
+    pickle.dump(glove_embds, open(os.path.join(glove_embds_path, glove_txt_name.replace(".txt", "_word2vectors_dict.pcl")), "wb"))
 
     sys.stdout.write("files saved to {}\n".format(glove_embds_path))
 
     return words, word2ix, glove_embds
 
-def combine_word_vocab(dataset_voc, pretrained_embs, d_embd, save_path=None):
+
+def combine_word_vocab(dataset_voc:Dict[str,int], pretrained_embds:Dict[str,np.array], d_embd:int, save_path="."):
     """
     combine dataset's vocabulary with GloVe to create an embedding layer for words (initiating unkown tokens with random normal distributed weights)
-    :param dataset_voc:
+    :param dataset_voc: a word2ix dictionary
     :param pretrained_embs_voc:
     :return: vocabulary_size, embeddings_dimentions, embedding layer with appropriate weights
     """
-    new_word2ix = {w: i for (i,w) in enumerate(pretrained_embs.keys())}
+    new_word2ix = {w: i for (i,w) in enumerate(pretrained_embds.keys(),1)} #save index 0 for padding (if implementing batching
+    new_word2ix[PAD_SYMBOL] = 0 # reserve un-initalized weight vector for padding symbol
+
     new_weights = dict()
     new_ix = len(new_word2ix.keys())
 
     diff = 0
-    for ds_word in dataset_voc:
-        if ds_word not in pretrained_embs.keys():
+
+    std = 1/np.sqrt(d_embd) # standard deviation for randomized vectors
+
+    for ds_word in dataset_voc.keys():
+        if ds_word not in pretrained_embds.keys():
             diff += 1
-            # randomize normal distributed weight for unknown word
-            weight = np.random.normal(scale=0.5,size=(d_embd,)) # TODO - consider changing 'scale' parameter
+            # randomize normal distributed weight for unknown word using Xavier's initialization variant
+            weight = np.random.normal(0, scale=std, size=(d_embd,)).astype(np.float32)
             new_word2ix[ds_word] = new_ix
             new_weights[new_ix] = weight
             new_ix += 1
 
     # add UNKNOWN_TOKEN_SYMBOL for later use
     new_word2ix[UNK_TOKEN_SYMBOL] = new_ix
-    new_weights[new_ix] = np.random.normal(scale=0.5,size=(d_embd,)) # TODO - same
+    new_weights[new_ix] = np.random.normal(0, scale=std, size=(d_embd,))
+    new_weights[new_word2ix[PAD_SYMBOL]] = np.zeros(d_embd,)
 
     # create weight matrix
     voc_size = len(new_word2ix.keys())
+
     weight_matrix = np.zeros((voc_size,d_embd))
 
     for word, ix in new_word2ix.items():
         try:
-            weight_matrix[ix] = pretrained_embs[word]
+            weight_matrix[ix] = pretrained_embds[word]
         except KeyError:
             weight_matrix[ix] = new_weights[ix]
 
     # create embedding layer
     embd_layer = nn.Embedding(num_embeddings=voc_size,embedding_dim=d_embd)
-    embd_layer.load_state_dict({'weight':weight_matrix})
+    embd_layer.weight.data = torch.Tensor(weight_matrix)
 
     if save_path:
-        with open(save_path+"_word2ix.pcl", "wb") as f:
+        with open(os.path.join(save_path,"combined_word_voc_word2ix.pcl"), "wb") as f:
             pickle.dump(obj=new_word2ix,file=f)
-        with open(save_path+"_embdLayer.pcl", "wb") as f:
+        with open(os.path.join(save_path,"combined_word_voc_embdLayer.pcl"), "wb") as f:
             pickle.dump(obj=embd_layer,file=f)
+        sys.stdout.write("\n")
+
+    sys.stdout.write("saved combined vocab and embedding layer to {}\n".format(save_path))
 
     return new_word2ix, embd_layer
+
 
 # actual model
 class BiLSTM_Segmentor_Classifier(nn.Module):
@@ -221,7 +241,27 @@ class BiLSTM_Segmentor_Classifier(nn.Module):
         tag_scores = F.log_softmax(tag_space, dim=-1)
         return tag_scores
 
+
+def prepare_train_data():
+    # get train-test split
+    data_path = os.path.abspath(os.path.abspath(os.path.join("..", "data")))
+    split_path = os.path.join(data_path, "train-test-split.csv")
+    train_files, _ = get_train_test_split(split_path)
+    # build and save vocabularies as word2index dictionaries
+    word2ix, pos2ix, ac_tag2ix, rel_2ix = build_vocabularies(data_path=data_path, train_file_names=train_files)
+    # prepare and save pre-trained GloVe word embeddings as word2np.array indices
+    word_embd_dim = 100
+    save_path = os.path.abspath(os.path.join(data_path, "vocabularies"))
+    sys.stdout.write("processing pre-trained embeddings\n")
+    _, _, glove_embds = prepare_glove_embeddings(glove_embds_path=os.path.join(data_path, "glove.6B"),
+                                                 glove_txt_name="glove.6B.100d.txt")
+    sys.stdout.write("building combined vocabulary and pretrained embedding layer\n")
+    _, word_embd_layer = combine_word_vocab(dataset_voc=word2ix, pretrained_embds=glove_embds, d_embd=word_embd_dim,
+                                            save_path=save_path)
+
+
 def main():
+    # prepare_train_data()
     pass
 
 if __name__ == "__main__":
