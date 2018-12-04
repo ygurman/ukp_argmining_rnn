@@ -23,6 +23,10 @@ from nltk.tokenize import sent_tokenize
 
 EMPTY_SIGN = "~"
 
+###
+# generic .ann files related methods
+###
+
 def readAnnotatedFile(ann_path: str) -> (dict, dict, dict, list, list):
     """
     parse data from ".ann" UKP 2.0 files and pass according dictionaries for props, labels, stances, supports and attaks
@@ -177,6 +181,14 @@ class ArgDoc(object):
         print("saved png to {}".format(path))
 
 ###
+# visualize all argumentative essays and save to fixed location
+###
+def visualize_all_dataset(data_path = os.path.abspath(os.path.join("..","data"))):
+    essays = [fn[:-4] for fn in os.listdir(data_path) if fn[:-3] == "ann"]
+    for essay in essays:
+        arg_doc = ArgDoc(os.path.join(data_path,essay))
+        arg_doc.visualize(os.path.abspath(os.path.join("..","graphs")))
+###
 # ann 2 conll functions
 ###
 
@@ -273,6 +285,9 @@ def convert_dataset_to_conll(data_path):
     for base_name in pbar:
         pre_process_ukp_essay(base_path=os.path.join(data_path,base_name),pos_tagger=pos_tagger)
 
+###
+# vocabulary related methods
+###
 
 UNK_TOKEN_SYMBOL = "UNKNOWN_TOKEN"
 PAD_SYMBOL = "PAD_SYM"
@@ -445,12 +460,11 @@ def combine_word_vocab(dataset_voc:Dict[str,int], pretrained_embds:Dict[str,np.a
 
     return new_word2ix, embd_layer
 
-def create_combined_vocab_and_pretrained_embeddings_layer():
+def create_combined_vocab_and_pretrained_embeddings_layer(data_path):
     """
     create combined vocabularies and word-embeddings layer for pre-trained and train data
     """
     # get train-test split
-    data_path = os.path.abspath(os.path.abspath(os.path.join("..", "data")))
     split_path = os.path.join(data_path, "train-test-split.csv")
     train_files, _ = get_train_test_split(split_path)
     # build and save vocabularies as word2index dictionaries
@@ -465,8 +479,25 @@ def create_combined_vocab_and_pretrained_embeddings_layer():
     _, word_embd_layer = combine_word_vocab(dataset_voc=word2ix, pretrained_embds=glove_embds, d_embd=word_embd_dim,
                                             save_path=save_path)
 
-def main():
-    pass #TODO - apply preprocess by argparse choices
+###
+# preprocess main - enable pre-process tasks by flags
+###
+from argparse import ArgumentParser
+def main(convert, build_voc, visualize, data_path):
+    if convert:
+        convert_dataset_to_conll(data_path)
+    if build_voc:
+        create_combined_vocab_and_pretrained_embeddings_layer(data_path)
+    if visualize:
+        visualize_all_dataset(data_path)
+
 
 if __name__ == '__main__':
-    main()
+    arg_parser = ArgumentParser()
+    arg_parser.add_argument('-c', '--convert2conll', action='store_true', help="convert dataset to conll form")
+    arg_parser.add_argument('-b','--build_vocabs', action='store_true', help="build vocabularies using pre-trained embeddings")
+    arg_parser.add_argument('-v', '--visualize_dataset', action='store_true', help="visualise all essays in dataset")
+    arg_parser.add_argument('-d', '--data_path', action='store', default="data", help="data directory path")
+    args = arg_parser.parse_args(sys.argv[1:])
+    data_path = os.path.abspath(args.data_path)
+    main(args.convert2conll, args.build_vocabs, args.visualize_dataset, data_path)
