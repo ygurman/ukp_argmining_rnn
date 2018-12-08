@@ -21,6 +21,8 @@ import pydot
 from nltk.parse import CoreNLPParser
 from nltk.tokenize import sent_tokenize
 
+from src.train import DivisionResolution
+
 EMPTY_SIGN = "~"
 
 ###
@@ -294,18 +296,6 @@ PAD_SYMBOL = "PAD_SYM"
 torch.manual_seed(361)
 np.random.seed(361)
 
-# utility function for input preparation
-def prepare_sequence(seq:[str], to_ix:dict) -> torch.tensor:
-    """
-    use pre-defined indexed vocabulary and return a tensor of integers appropriate to string input (list of tokens/POSs/tags)
-    used as input for the segmentor/classifier (for the first embedding layers)
-    :param seq: list of tokens/POSs/tags
-    :param to_ix: dictionary incexing the tokens/POSs/tags vocabulary
-    :return: matching torch.tensor of integers representing input lists
-    """
-    idxs = [to_ix[w] for w in seq] # replace input tokens/POSs with matching indices
-    return torch.tensor(idxs, dtype=torch.long) # convert to torch tensor type
-
 def build_vocabularies(data_path,train_file_names):
     """
     read files in order to create vocabularies of tags (AC types and rel Types) and inputs (words, POSs)
@@ -325,7 +315,7 @@ def build_vocabularies(data_path,train_file_names):
             for line in f:
                 if line[0] == "#":
                     continue
-                tok, pos, ac_tag, _, rel_tag = line.split('\t')
+                tok, pos, ac_tag, _, rel_tag = line.strip().split('\t')
                 word_voc.add(tok.lower())
                 pos_voc.add(pos)
                 ac_tag_voc.add(ac_tag)
@@ -478,6 +468,92 @@ def create_combined_vocab_and_pretrained_embeddings_layer(data_path):
     sys.stdout.write("building combined vocabulary and pretrained embedding layer\n")
     _, word_embd_layer = combine_word_vocab(dataset_voc=word2ix, pretrained_embds=glove_embds, d_embd=word_embd_dim,
                                             save_path=save_path)
+
+
+# utility function for input preparation
+def prepare_sequence(seq:[str], to_ix:dict) -> torch.tensor:
+    """
+    use pre-defined indexed vocabulary and return a tensor of integers appropriate to string input (list of tokens/POSs/tags)
+    used as input for the segmentor/classifier (for the first embedding layers)
+    :param seq: list of tokens/POSs/tags
+    :param to_ix: dictionary incexing the tokens/POSs/tags vocabulary
+    :return: matching torch.tensor of integers representing input lists
+    """
+    idxs = [to_ix[w] for w in seq] # replace input tokens/POSs with matching indices
+    return torch.tensor(idxs, dtype=torch.long) # convert to torch tensor type
+
+
+def prepare_data(division_type, files, data_path = os.path.abspath(os.path.join("..","data"))):
+    """
+    prepare data for training in units according to devision type (sentence, paragraph or essay level)
+    :param division_type: enumarated value depicting devision level of data
+    :return: sequences for training/testing and tagging
+    """
+    word2ix = pickle.load(open(os.path.join(data_path,"vocabularies","combined_word_voc_word2ix.pcl"),'rb'))
+    pos2ix = pickle.load(open(os.path.join(data_path,"vocabularies", "pos2ix.pcl"), 'rb'))
+    ac_tag2ix = pickle.load(open(os.path.join(data_path,"vocabularies", "ac_tag2ix.pcl"), 'rb'))
+
+    # store as list of essays (as list of paragraphs (as list of sentences))) for later flattening by division type
+    indexed_essays = []
+    for essay in files:
+        indexed_essay = []
+        indexed_paragraph = []
+        indexed_sent = []
+        with open(os.path.join(data_path,"processed",essay+".tsv"),'rt') as f:
+            # skip first two lines (always "indexed_sent = []","# sent")
+            next(f)
+            next(f)
+            for line in f:
+                # if starting new paragraph
+                if line[:5] == "# par":
+                    indexed_essay.append(indexed_paragraph)
+                    indexed_paragraph = []
+                # if starting new sentence
+                elif line[:5] == "# sen":
+                    indexed_paragraph.append(indexed_sent)
+                    indexed_sent = []
+                else:
+                    tok, pos, ac_tag, _, _ = line.strip().split('\t')
+                    try:
+                        ind_tok = word2ix[tok.lower()]
+                    except KeyError:
+                        ind_tok = word2ix[UNK_TOKEN_SYMBOL]
+                    ind_pos = pos2ix[pos]
+                    ind_tag = ac_tag2ix[ac_tag]
+                    # append as (token, pos, tag) tuple
+                    indexed_sent.append((ind_tok, ind_pos, ind_tag))
+        indexed_essays.append(indexed_essay)
+
+    # only for quick access - TODO - remove after using once
+    #pickle.dump(indexed_essays,open("/home/yochay/ukp_argmining_rnn/indexed_data.pcl",'wb'))
+
+    indexed_tokens = []
+    indexed_POSs = []
+    indexed_AC_tags = []
+
+    # wrote on the fly for one-time use ... maybe use pandas instead... TODO
+    if division_type == DivisionResolution.ESSAY:
+        for essay in indexed_essays:
+            indexed_tokens.append(torch.tensor([tok for paragraph in essay for sent in paragraph for (tok,_,_) in sent],dtype=torch.long))
+            indexed_POSs.append(torch.tensor([pos for paragraph in essay for sent in paragraph for (_,pos,_) in sent],dtype=torch.long))
+            indexed_AC_tags.append(torch.tensor([tag for paragraph in essay for sent in paragraph for (_,_,tag) in sent],dtype=torch.long))
+
+    elif division_type == DivisionResolution.PARAGRAPH:
+            for essay in indexed_essays:
+                for paragraph in essay:
+                    indexed_tokens.append(torch.tensor([tok for sent in paragraph for tok,_,_ in sent],dtype=torch.long))
+                    indexed_POSs.append(torch.tensor([pos for sent in paragraph for _, pos, _ in sent],dtype=torch.long))
+                    indexed_AC_tags.append(torch.tensor([tag for sent in paragraph for _, _, tag in sent],dtype=torch.long))
+
+    else:
+        for essay in indexed_essays:
+            for paragraph in essay:
+                for sent in paragraph:
+                    indexed_tokens.append(torch.tensor([tok for tok, _, _ in sent],dtype=torch.long))
+                    indexed_POSs.append(torch.tensor([pos for _, pos, _ in sent],dtype=torch.long))
+                    indexed_AC_tags.append(torch.tensor([tag for _, _, tag in sent],dtype=torch.long))
+
+    return ((indexed_tokens, indexed_POSs), indexed_AC_tags)
 
 ###
 # preprocess main - enable pre-process tasks by flags
