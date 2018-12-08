@@ -18,9 +18,9 @@ class BiLSTM_Segmentor_Classifier(nn.Module):
         self.h1dimension = d_h1
 
         # embedding layers (words and POS tags)
-        self.embd_words = pickle.load(open(pretraind_embd_layer_path, 'rb')) if pretraind_embd_layer_path \
+        self.embd_word_layer = pickle.load(open(pretraind_embd_layer_path, 'rb')) if pretraind_embd_layer_path \
             else nn.Embedding(num_embeddings=word_voc_size, embedding_dim=d_word_embd)
-        self.emd_pos - nn.Embedding(num_embeddings=pos_voc_size, embedding_dim=d_pos_embd)
+        self.embd_pos_layer - nn.Embedding(num_embeddings=pos_voc_size, embedding_dim=d_pos_embd)
 
         # sequence (bilstm) layer - recive previous concatenated embeddings and pass to linear classification (for tagging)
         self.lstm1 = nn.LSTM(input_size=d_word_embd + d_pos_embd,  # input as concatenated word|pos embeddings

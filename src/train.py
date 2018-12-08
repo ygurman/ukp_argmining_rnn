@@ -7,13 +7,9 @@ import os
 
 from tqdm import tqdm
 
-from src.models import BiLSTM_Segmentor_Classifier
 import torch
 import torch.nn as nn
 import torch.optim as optim
-
-from src.preprocess import prepare_data
-from src.preprocess import get_train_test_split
 
 
 class DivisionResolution(Enum):
@@ -55,6 +51,10 @@ class HyperParams(object):
 def main(mode, config_file_path):
     # train the segmentor-classifier first
     h_params = HyperParams(config_file_path)
+    from src.preprocess import get_train_test_split
+    from src.preprocess import prepare_data
+    from src.models import BiLSTM_Segmentor_Classifier
+
     training_files, _ = get_train_test_split(os.path.abspath(os.path.join("..","data","train-test-split.csv")))
     training_data = prepare_data(mode,training_files)
 
