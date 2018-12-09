@@ -506,12 +506,17 @@ def prepare_data(division_type, files, data_path = os.path.abspath(os.path.join(
             for line in f:
                 # if starting new paragraph
                 if line[:5] == "# par":
-                    indexed_essay.append(indexed_paragraph)
-                    indexed_paragraph = []
+                    if len(indexed_sent) > 0:
+                        indexed_paragraph.append(indexed_sent)
+                        indexed_sent = []
+                    if len(indexed_paragraph) > 0:
+                        indexed_essay.append(indexed_paragraph)
+                        indexed_paragraph = []
                 # if starting new sentence
                 elif line[:5] == "# sen":
-                    indexed_paragraph.append(indexed_sent)
-                    indexed_sent = []
+                    if len(indexed_sent) > 0:
+                        indexed_paragraph.append(indexed_sent)
+                        indexed_sent = []
                 else:
                     tok, pos, ac_tag, _, _ = line.strip().split('\t')
                     try:
@@ -524,28 +529,26 @@ def prepare_data(division_type, files, data_path = os.path.abspath(os.path.join(
                     indexed_sent.append((ind_tok, ind_pos, ind_tag))
         indexed_essays.append(indexed_essay)
 
-    # only for quick access - TODO - remove after using once
-    #pickle.dump(indexed_essays,open("/home/yochay/ukp_argmining_rnn/indexed_data.pcl",'wb'))
 
     indexed_tokens = []
     indexed_POSs = []
     indexed_AC_tags = []
 
     # wrote on the fly for one-time use ... maybe use pandas instead... TODO
-    if division_type == DivisionResolution.ESSAY:
+    if division_type.name == "ESSAY":
         for essay in indexed_essays:
             indexed_tokens.append(torch.tensor([tok for paragraph in essay for sent in paragraph for (tok,_,_) in sent],dtype=torch.long))
             indexed_POSs.append(torch.tensor([pos for paragraph in essay for sent in paragraph for (_,pos,_) in sent],dtype=torch.long))
             indexed_AC_tags.append(torch.tensor([tag for paragraph in essay for sent in paragraph for (_,_,tag) in sent],dtype=torch.long))
 
-    elif division_type == DivisionResolution.PARAGRAPH:
+    elif division_type.name == "PARAGRAPH":
             for essay in indexed_essays:
                 for paragraph in essay:
                     indexed_tokens.append(torch.tensor([tok for sent in paragraph for tok,_,_ in sent],dtype=torch.long))
                     indexed_POSs.append(torch.tensor([pos for sent in paragraph for _, pos, _ in sent],dtype=torch.long))
                     indexed_AC_tags.append(torch.tensor([tag for sent in paragraph for _, _, tag in sent],dtype=torch.long))
 
-    else:
+    elif division_type.name == "SENTENCE":
         for essay in indexed_essays:
             for paragraph in essay:
                 for sent in paragraph:
@@ -553,7 +556,7 @@ def prepare_data(division_type, files, data_path = os.path.abspath(os.path.join(
                     indexed_POSs.append(torch.tensor([pos for _, pos, _ in sent],dtype=torch.long))
                     indexed_AC_tags.append(torch.tensor([tag for _, _, tag in sent],dtype=torch.long))
 
-    return ((indexed_tokens, indexed_POSs), indexed_AC_tags)
+    return list(zip(indexed_tokens, indexed_POSs, indexed_AC_tags))
 
 ###
 # preprocess main - enable pre-process tasks by flags
@@ -566,7 +569,6 @@ def main(convert, build_voc, visualize, data_path):
         create_combined_vocab_and_pretrained_embeddings_layer(data_path)
     if visualize:
         visualize_all_dataset(data_path)
-
 
 if __name__ == '__main__':
     arg_parser = ArgumentParser()
