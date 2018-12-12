@@ -486,6 +486,8 @@ def prepare_sequence(seq:[str], to_ix:dict) -> torch.tensor:
 def prepare_data(division_type, files, data_path = os.path.abspath(os.path.join("..","data"))):
     """
     prepare data for training in units according to devision type (sentence, paragraph or essay level)
+    :param data_path: data directory path
+    :param files: data file names list (train\test)
     :param division_type: enumarated value depicting devision level of data
     :return: sequences for training/testing and tagging
     """
@@ -499,10 +501,8 @@ def prepare_data(division_type, files, data_path = os.path.abspath(os.path.join(
         indexed_essay = []
         indexed_paragraph = []
         indexed_sent = []
+        i_tok = 0
         with open(os.path.join(data_path,"processed",essay+".tsv"),'rt') as f:
-            # skip first two lines (always "indexed_sent = []","# sent")
-            next(f)
-            next(f)
             for line in f:
                 # if starting new paragraph
                 if line[:5] == "# par":
@@ -527,8 +527,11 @@ def prepare_data(division_type, files, data_path = os.path.abspath(os.path.join(
                     ind_tag = ac_tag2ix[ac_tag]
                     # append as (token, pos, tag) tuple
                     indexed_sent.append((ind_tok, ind_pos, ind_tag))
-        indexed_essays.append(indexed_essay)
 
+        # handle end of file
+        indexed_paragraph.append(indexed_sent)
+        indexed_essay.append(indexed_paragraph)
+        indexed_essays.append(indexed_essay)
 
     indexed_tokens = []
     indexed_POSs = []
@@ -563,6 +566,14 @@ def prepare_data(division_type, files, data_path = os.path.abspath(os.path.join(
 ###
 from argparse import ArgumentParser
 def main(convert, build_voc, visualize, data_path):
+    """
+    pre-process dataset, enabling building vocabularies, visualization and conversion to conll format
+    :param convert: convert data to conll?
+    :param build_voc: build vocabularies and pre-trained embedding layer?
+    :param visualize: create png graph visualization of the essays
+    :param data_path: dataset derictory path
+    :return:
+    """
     if convert:
         convert_dataset_to_conll(data_path)
     if build_voc:
@@ -575,7 +586,7 @@ if __name__ == '__main__':
     arg_parser.add_argument('-c', '--convert2conll', action='store_true', help="convert dataset to conll form")
     arg_parser.add_argument('-b','--build_vocabs', action='store_true', help="build vocabularies using pre-trained embeddings")
     arg_parser.add_argument('-v', '--visualize_dataset', action='store_true', help="visualise all essays in dataset")
-    arg_parser.add_argument('-d', '--data_path', action='store', default="data", help="data directory path")
+    arg_parser.add_argument('-d', '--data_path', action='store', default="/../data", help="data directory path")
     args = arg_parser.parse_args(sys.argv[1:])
     data_path = os.path.abspath(args.data_path)
     main(args.convert2conll, args.build_vocabs, args.visualize_dataset, data_path)

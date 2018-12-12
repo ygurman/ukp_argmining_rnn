@@ -43,6 +43,7 @@ class HyperParams(object):
         self.ac_tagset_size = int(hp_dict["ac_tagset_size"])
         self.pretraind_embd_layer_path = os.path.abspath(hp_dict['pretraind_embd_layer_path'])
         self.batch_size = int(hp_dict['batch_size'])
+        self.use_pos = True if hp_dict['use_pos'] == "True" else False
         # training and optimization parameters
         self.clip_threshold = int(hp_dict['clip_threshold'])
         self.learning_rate = float(hp_dict['learning_rate'])
@@ -50,6 +51,7 @@ class HyperParams(object):
         self.n_epochs = int(hp_dict['n_epochs'])
         # general parameters
         self.models_dir = os.path.abspath(hp_dict['models_dir'])
+        self.rand_seed = int(hp_dict['rand_seed'])
 
 
 def main(mode, config_file_path):
@@ -58,12 +60,15 @@ def main(mode, config_file_path):
     from src.preprocess import get_train_test_split
     from src.preprocess import prepare_data
     from src.models import BiLSTM_Segmentor_Classifier
+    from src.models import BiLSTM_Segmentor_Classifier_no_pos
+
+    torch.manual_seed(h_params.rand_seed)
 
     training_files, _ = get_train_test_split(os.path.abspath(os.path.join("..","data","train-test-split.csv")))
     training_data = prepare_data(mode,training_files)
-
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model = BiLSTM_Segmentor_Classifier(h_params.d_word_embd, h_params.d_pos_embd, h_params.d_h1,
+    SegmentorClassifier = BiLSTM_Segmentor_Classifier if h_params.use_pos else BiLSTM_Segmentor_Classifier_no_pos
+    model = SegmentorClassifier(h_params.d_word_embd, h_params.d_pos_embd, h_params.d_h1,
                                         h_params.n_lstm_layers, h_params.word_voc_size, h_params.pos_voc_size,
                                         h_params.ac_tagset_size, h_params.batch_size, device,
                                         h_params.pretraind_embd_layer_path)
@@ -78,11 +83,13 @@ def main(mode, config_file_path):
         loss_function.cuda()
 
     # display parameters in model
-    params = list(model.parameters()) + list(loss_function.parameters())
-    total_params = sum(
-        x.size()[0] * x.size()[1] if len(x.size()) > 1 else x.size()[0] for x in params if x.size())
-    sys.stdout.write('Args:{}\n'.format(params))
-    sys.stdout.write('Model total parameters:{}\n'.format(total_params))
+    for param_tensor in model.state_dict():
+        print(param_tensor, "\t", model.state_dict()[param_tensor].size())
+
+    # display optimizers paramersparamete
+    print("Optimizer's state_dict:")
+    for var_name in optimizer.state_dict():
+        print(var_name, "\t", optimizer.state_dict()[var_name])
 
     # set train mode
     model.train()
@@ -120,7 +127,7 @@ def main(mode, config_file_path):
                     'model_state_dict': model.state_dict(),
                     'optimizer_state_dict': optimizer.state_dict(),
                     'loss': loss}, os.path.abspath(os.path.join(
-                    h_params.models_dir,"{}_SegClass_mode-{}_ep-{}.pt".format(str(date.today()),mode,epoch))))
+                    h_params.models_dir,"{}_SegClass_mode-{}_ep-{}_{}.pt".format(str(date.today()),mode,epoch,"no_POS" if not h_params.use_pos else ""))))
             except:
                 sys.stdout.write('failed to save model in epoch {}\n'.format(epoch))
 
@@ -129,7 +136,7 @@ def main(mode, config_file_path):
         'epoch': epoch,
         'model_state_dict': model.state_dict(),
         'optimizer_state_dict': optimizer.state_dict(),
-        'loss': loss}, os.path.abspath(os.path.join(h_params.models_dir,"{}_SegClass_{}_ep-{}.pt".format(str(date.today()),mode,epoch))))
+        'loss': loss}, os.path.abspath(os.path.join(h_params.models_dir,"{}_SegClass_{}_ep-{}_{}.pt".format(str(date.today()),mode,epoch,"no_POS" if not h_params.use_pos else ""))))
 
     #announce end
     sys.stdout.write("finished training")
