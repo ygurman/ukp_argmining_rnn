@@ -502,6 +502,8 @@ def prepare_data(division_type, files, data_path = os.path.abspath(os.path.join(
         indexed_paragraph = []
         indexed_sent = []
         i_tok = 0
+        i_par = 0
+        i_ess = int(essay[-7:-4])
         with open(os.path.join(data_path,"processed",essay+".tsv"),'rt') as f:
             for line in f:
                 # if starting new paragraph
@@ -512,6 +514,7 @@ def prepare_data(division_type, files, data_path = os.path.abspath(os.path.join(
                     if len(indexed_paragraph) > 0:
                         indexed_essay.append(indexed_paragraph)
                         indexed_paragraph = []
+                    i_par = int(line.strip().split()[-1])
                 # if starting new sentence
                 elif line[:5] == "# sen":
                     if len(indexed_sent) > 0:
@@ -525,8 +528,11 @@ def prepare_data(division_type, files, data_path = os.path.abspath(os.path.join(
                         ind_tok = word2ix[UNK_TOKEN_SYMBOL]
                     ind_pos = pos2ix[pos]
                     ind_tag = ac_tag2ix[ac_tag]
-                    # append as (token, pos, tag) tuple
-                    indexed_sent.append((ind_tok, ind_pos, ind_tag))
+                    # save original (essay,paragraph,token) index
+                    e_p_t_offset = (i_ess, i_par, i_tok)
+                    # append as (token, pos, tag, offset) tuple
+                    indexed_sent.append((ind_tok, ind_pos, ind_tag,e_p_t_offset))
+                    i_tok += 1
 
         # handle end of file
         indexed_paragraph.append(indexed_sent)
@@ -536,30 +542,34 @@ def prepare_data(division_type, files, data_path = os.path.abspath(os.path.join(
     indexed_tokens = []
     indexed_POSs = []
     indexed_AC_tags = []
+    e_p_t_offsets = []
 
-    # wrote on the fly for one-time use ... maybe use pandas instead... TODO
+    # wrote on the fly for one-time use ... maybe use pandas instead...
     if division_type.name == "ESSAY":
         for essay in indexed_essays:
-            indexed_tokens.append(torch.tensor([tok for paragraph in essay for sent in paragraph for (tok,_,_) in sent],dtype=torch.long))
-            indexed_POSs.append(torch.tensor([pos for paragraph in essay for sent in paragraph for (_,pos,_) in sent],dtype=torch.long))
-            indexed_AC_tags.append(torch.tensor([tag for paragraph in essay for sent in paragraph for (_,_,tag) in sent],dtype=torch.long))
+            indexed_tokens.append(torch.tensor([tok for paragraph in essay for sent in paragraph for (tok,_,_,_) in sent],dtype=torch.long))
+            indexed_POSs.append(torch.tensor([pos for paragraph in essay for sent in paragraph for (_,pos,_,_) in sent],dtype=torch.long))
+            indexed_AC_tags.append(torch.tensor([tag for paragraph in essay for sent in paragraph for (_,_,tag,_) in sent],dtype=torch.long))
+            e_p_t_offsets.append([e_p_t_index for paragraph in essay for sent in paragraph for (_,_,_,e_p_t_index) in sent])
 
     elif division_type.name == "PARAGRAPH":
             for essay in indexed_essays:
                 for paragraph in essay:
-                    indexed_tokens.append(torch.tensor([tok for sent in paragraph for tok,_,_ in sent],dtype=torch.long))
-                    indexed_POSs.append(torch.tensor([pos for sent in paragraph for _, pos, _ in sent],dtype=torch.long))
-                    indexed_AC_tags.append(torch.tensor([tag for sent in paragraph for _, _, tag in sent],dtype=torch.long))
+                    indexed_tokens.append(torch.tensor([tok for sent in paragraph for tok,_,_,_ in sent],dtype=torch.long))
+                    indexed_POSs.append(torch.tensor([pos for sent in paragraph for _,pos,_,_ in sent],dtype=torch.long))
+                    indexed_AC_tags.append(torch.tensor([tag for sent in paragraph for _,_,tag,_ in sent],dtype=torch.long))
+                    e_p_t_offsets.append([e_p_t_index for sent in paragraph for _,_,_,e_p_t_index in sent])
 
     elif division_type.name == "SENTENCE":
         for essay in indexed_essays:
             for paragraph in essay:
                 for sent in paragraph:
-                    indexed_tokens.append(torch.tensor([tok for tok, _, _ in sent],dtype=torch.long))
-                    indexed_POSs.append(torch.tensor([pos for _, pos, _ in sent],dtype=torch.long))
-                    indexed_AC_tags.append(torch.tensor([tag for _, _, tag in sent],dtype=torch.long))
+                    indexed_tokens.append(torch.tensor([tok for tok, _, _,_ in sent],dtype=torch.long))
+                    indexed_POSs.append(torch.tensor([pos for _,pos,_,_ in sent],dtype=torch.long))
+                    indexed_AC_tags.append(torch.tensor([tag for _, _,tag,_ in sent],dtype=torch.long))
+                    e_p_t_offsets.append([e_p_t_index for _,_,_,e_p_t_index in sent])
 
-    return list(zip(indexed_tokens, indexed_POSs, indexed_AC_tags))
+    return list(zip(indexed_tokens, indexed_POSs, indexed_AC_tags)), e_p_t_offsets
 
 ###
 # preprocess main - enable pre-process tasks by flags

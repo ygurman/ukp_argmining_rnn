@@ -60,7 +60,7 @@ def main(mode, config_file_path, trained_model_path):
     torch.manual_seed(h_params.rand_seed)
 
     _, test_files = get_train_test_split(os.path.abspath(os.path.join("..", "data", "train-test-split.csv")))
-    test_data = prepare_data(mode, test_files)
+    test_data, ept_offsets = prepare_data(mode, test_files)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     SegmentorClassifier = BiLSTM_Segmentor_Classifier if h_params.use_pos else BiLSTM_Segmentor_Classifier_no_pos
     model = SegmentorClassifier(h_params.d_word_embd, h_params.d_pos_embd, h_params.d_h1,
@@ -80,14 +80,13 @@ def main(mode, config_file_path, trained_model_path):
     model.eval()
 
     # inference for all chosen data
-    correct = 0
-    total = 0
+    preds = []
+
     with torch.no_grad():
         for (indexed_tokens, indexed_POSs, indexed_AC_tags) in test_data:
             tag_scores = model((indexed_tokens.to(device),indexed_POSs.to(device))) # get log soft max for input
-            preds = torch.argmax(tag_scores, dim=1)
+            preds.append(torch.argmax(tag_scores, dim=1))
 
-    print("{:2f}".format(100 * float(correct) / total ))
     # save results
 
 

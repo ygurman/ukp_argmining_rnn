@@ -65,7 +65,7 @@ def main(mode, config_file_path):
     torch.manual_seed(h_params.rand_seed)
 
     training_files, _ = get_train_test_split(os.path.abspath(os.path.join("..","data","train-test-split.csv")))
-    training_data = prepare_data(mode,training_files)
+    training_data, _ = prepare_data(mode,training_files)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     SegmentorClassifier = BiLSTM_Segmentor_Classifier if h_params.use_pos else BiLSTM_Segmentor_Classifier_no_pos
     model = SegmentorClassifier(h_params.d_word_embd, h_params.d_pos_embd, h_params.d_h1,
