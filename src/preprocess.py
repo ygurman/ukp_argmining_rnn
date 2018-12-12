@@ -503,7 +503,7 @@ def prepare_data(division_type, files, data_path = os.path.abspath(os.path.join(
         indexed_sent = []
         i_tok = 0
         i_par = 0
-        i_ess = int(essay[-7:-4])
+        i_ess = int(essay[-3:])
         with open(os.path.join(data_path,"processed",essay+".tsv"),'rt') as f:
             for line in f:
                 # if starting new paragraph
