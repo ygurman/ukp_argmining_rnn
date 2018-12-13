@@ -3,6 +3,8 @@ import pickle
 import sys
 from collections import defaultdict
 
+from tqdm import tqdm
+
 RELATIONS_TYPES = ["no-relation","a supports b","a attacks b","a For b","a Against b"]
 def create_rel_vocabulary(relation_types,voc_dir_path):
     rel2ix = dict((w, i) for i, w in enumerate(relation_types))
@@ -144,20 +146,23 @@ def convert_results_to_tsv(results_file_path, vocab_dir_path,data_path):
     """
     # predicted form - essay_paragraph_token_index	true AC-tag	predicted AC-tag	post processed AC tag
     # conll form - token,pos,ac_tag(predicted),ac_id(need to calculate),gold_relation(calculate based on majority)
-    ix2tag = pickle.load(open(os.path.join(vocab_dir_path,"ix2rel.pcl")))
+    ix2tag = pickle.load(open(os.path.join(vocab_dir_path,"ix2ac_tag.pcl"),'rb'))
 
     # first determine relevant essays from predicted file
     essays = set()
-    predicted_ac_tags = defaultdict(list)
+    predicted_ac_tags = {}
     with open(results_file_path,'rt') as f:
         next(f) # skip header
         for line in f:
-            ess_id, _, _, predicted_tag = line.split('\t')
-            essays.add(int(ess_id))
-            predicted_ac_tags[int(ess_id)].append(ix2tag[int(predicted_tag)])
+            ept_i, _, _, predicted_tag = line.split('\t')
+            ess_id = int(ept_i[1:ept_i.find(",")])
+            essays.add(ess_id)
+            if ess_id not in predicted_ac_tags.keys():
+                predicted_ac_tags[ess_id] = []
+            predicted_ac_tags[ess_id].append(ix2tag[int(predicted_tag)])
 
     # read from tsv file (tokens, poss, indices and relations as is)
-    for essay in essays:
+    for essay in tqdm(essays):
         paragraph_offsets = []
         # copy info from tsv
         with open(os.path.join(data_path,"processed","essay{:3d}.tsv".format(essay).replace(" ","0"))) as f_tsv:
@@ -186,14 +191,11 @@ def convert_results_to_tsv(results_file_path, vocab_dir_path,data_path):
                         new_spans.append((span_beg,i_tok))
                     i_tok += 1
 
-        # apply voting mechanism to fill empty gaps (use majority where there are disagreements about rel_type. use new ac_id
-        old_ac_dict, old_rel_dict = get_all_relations_from_tsv(os.path.join(data_path,"processed","essay{:3d}.tsv".format(essay).replace(" ","0")))
-
         # first vote if matching to any old id (by majority) - note: this is invariant to wrong classification and only refer to border detection
-        new_ids = [~] * len(new_ac_tags)
+        new_ids = ["~"] * len(new_ac_tags)
         map_new2old = defaultdict()
         new_rels = ["~"] * len(new_ac_tags)
-        for new_id, span in list[enumerate(new_spans)]:
+        for new_id, span in list(enumerate(new_spans)):
             beg, end = span
             # update new ac_ids
             new_ids[beg:end] = [new_id] * (end - beg)
@@ -202,12 +204,11 @@ def convert_results_to_tsv(results_file_path, vocab_dir_path,data_path):
             if "~" in old_id_count.keys(): old_id_count["~"] -= 1
             majority_old_id = max(old_id_count, key = old_id_count.get)
             map_new2old[new_id] = majority_old_id
-            rel_maj = old_rels[beg:end][old_ids.index(majority_old_id)]
+            rel_maj = old_rels[beg:end][old_ids[beg:end].index(majority_old_id)]
             # storing old rels according to old ids in new rels (will be replaced using dictionary later)
             new_rels[beg:end] = [rel_maj] * (end-beg)
 
-        map_old2new =  {old: new for new,old in map_new2old.items()}
-
+        map_old2new = {old: new for new,old in map_new2old.items()}
         # compute new relations
         for span in new_spans:
             beg, end = span
@@ -220,19 +221,17 @@ def convert_results_to_tsv(results_file_path, vocab_dir_path,data_path):
                 type, side_b = old_rel.split(":")
                 # if it's the former, leave it
                 if side_b != "~":
-                    side_b = map_old2new[side_b]
+                    try:
+                        side_b = map_old2new[side_b]
+                    except KeyError:
+                        side_b = "~"
                     new_rels[beg:end] = ["{}:{}".format(type,side_b)] * (end-beg)
 
         # create new tsv file
         dest_dir = os.path.split(results_file_path)[0]
         with open(os.path.join(dest_dir,"predicted_essay{:3d}.tsv".format(essay).replace(" ","0")),"wt") as new_tsv:
-            for i in range(len(new_ac_tags)):
+            for i in range(len(tokens)):
                 new_id = new_ids[i]
                 new_tsv.write("{}\t{}\t{}\t{}\t{}\n".format(tokens[i],poss[i],new_ac_tags[i],new_id,new_rels[i]))
 
-        sys.stdout.write("wrote {} tsvs to {}".format(len(essay),dest_dir))
-
-def prepare_data():
-    pass
-
-get_all_relations_from_tsv('/home/yochay/ukp_argmining_rnn/data/processed/essay012.tsv')
+        sys.stdout.write("wrote {:d} tsvs to {}".format(len(essays),dest_dir))

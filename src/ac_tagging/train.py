@@ -24,7 +24,7 @@ def main(mode, config_file_path):
     torch.manual_seed(h_params.rand_seed)
 
     training_files, _ = get_train_test_split(os.path.abspath(os.path.join("..","data","train-test-split.csv")))
-    training_data, _ = prepare_data(mode,training_files)
+    training_data, _ = prepare_data(mode,training_files,data_path=h_params.data_dir)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     SegmentorClassifier = BiLSTM_Segmentor_Classifier if h_params.use_pos else BiLSTM_Segmentor_Classifier_no_pos
     model = SegmentorClassifier(h_params.d_word_embd, h_params.d_pos_embd, h_params.d_h1,
@@ -52,7 +52,7 @@ def main(mode, config_file_path):
 
     # set train mode
     model.train()
-
+    h_params.n_epochs = 1000
     for epoch in range(h_params.n_epochs):
         start_time = time.time()
         acc_loss = 0.0 # accumalating loss per epoch for display
@@ -79,7 +79,7 @@ def main(mode, config_file_path):
         sys.stdout.write("===> Epoch[{}/{}]: Loss: {:.4f} , time = {:d}[s]\n".format(epoch+1, h_params.n_epochs,
                                                                                      acc_loss,int(end_time-start_time)))
 
-        if epoch in [25,50,75]:
+        if epoch in [200,300,400,500,600,700,800,900]:
             try:
                 torch.save({
                     'epoch': epoch,
