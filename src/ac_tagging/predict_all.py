@@ -17,13 +17,11 @@ def main(mode, config_file_path, trained_model_path):
     from src.ac_tagging.models import BiLSTM_Segmentor_Classifier_no_pos
 
     torch.manual_seed(h_params.rand_seed)
-    # debug - TODO delete - run for all models:
     model_dir = h_params.models_dir
     all_models = os.listdir(model_dir)
     for model_name in all_models:
         h_params.use_pos = True if model_name.find("no_POS") == -1 else False
         for mode in [DivisionResolution.ESSAY,DivisionResolution.SENTENCE,DivisionResolution.PARAGRAPH]:
-            # Debug - TODO - delete after running all tests
             _, test_files = get_train_test_split(os.path.abspath(os.path.join(h_params.data_dir, "train-test-split.csv")))
             test_data, ept_offsets = prepare_data(mode, test_files,h_params.data_dir)
             device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -33,8 +31,7 @@ def main(mode, config_file_path, trained_model_path):
                                         h_params.ac_tagset_size, h_params.batch_size, device,
                                         h_params.pretraind_embd_layer_path)
             # load trained model state-dict
-            checkpoint = torch.load(os.path.join(model_dir,model_name))  # TODO - delete when back to normal
-            #checkpoint = torch.load(trained_model_path) #TODO - uncomment when back to normal
+            checkpoint = torch.load(os.path.join(model_dir,model_name))
             model.load_state_dict(checkpoint['model_state_dict'])
             ## set CUDA if available
             if torch.cuda.is_available():
@@ -51,8 +48,8 @@ def main(mode, config_file_path, trained_model_path):
             ac_tag2ix = pickle.load(open(os.path.join(h_params.vocab_dir,"ac_tag2ix.pcl"),'rb'))
             corrected_tags = post_process(preds, ac_tag2ix)
             # save results
-            #results_file = os.path.join("..","exps",os.path.split(trained_model_path)[-1][:-3]+".results") # TODO - uncomment when back to normal
-            results_file = os.path.join(h_params.exps_dir,"{}|{}.results".format(model_name[:-3],mode)) # TODO - delete when back to normal
+            #results_file = os.path.join("..","exps",os.path.split(trained_model_path)[-1][:-3]+".results")
+            results_file = os.path.join(h_params.exps_dir,"{}|{}.results".format(model_name[:-3],mode))
 
             true_tags = [ac_tags.tolist() for _,_,ac_tags in test_data]
             with open(results_file,'wt') as f:
