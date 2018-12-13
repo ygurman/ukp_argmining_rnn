@@ -42,18 +42,34 @@ def get_all_relations_from_gold(essay_tsv_path):
     # gather paragraph offsets and major claims ids
     with open(essay_tsv_path,'rt') as f:
         lines = f.read().split('\n')
-        # keep paragraphs
-        paragraphs = []
+        tokens_buffer = []
+        poss_buffer = []
         par = 0
+        span_begin = 0
+        i_tok = 0
+        prev_role = ''
+        ac_type = ''
         for line in lines:
             if line[:5] == "# par":
                 par = line.split()[-1]
-            elif line[0] != 0:
-                paragraphs.append(par)
-                if line.split()[2].split("-")[0] == "B":
-                if line.split()[2].split("-")[-1] == "MajorClaim":
-                    # save major calims ids
+            elif line[0] != "#":
+                tok, pos, ac_tag, ac_id, _ = line.split()
+                role , ac_type = ac_tag.split("-")
+                # handle ac beginning
+                if role == "B":
+                    span_begin =  i_tok
+
+                # handle either in-component or beginning
+                if role != 'O':
+                    tokens_buffer.append(tok)
+                    poss_buffer.append(pos)
+
+                if ac_type == "MajorClaim":
+                    # save major calims ids for relation specification
                     major_claims.add(line.split()[3])
+                i_tok +=1
+
+                prev_role = ac_tag.split("-")[0]
 
     # get all ACs
 

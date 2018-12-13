@@ -14,14 +14,12 @@ import os
 import numpy as np
 import pickle
 import sys
-from typing import Dict, List
+from typing import Dict
 import torch
 import torch.nn as nn
 import pydot
 from nltk.parse import CoreNLPParser
 from nltk.tokenize import sent_tokenize
-
-from src.train import DivisionResolution
 
 EMPTY_SIGN = "~"
 
@@ -483,7 +481,7 @@ def prepare_sequence(seq:[str], to_ix:dict) -> torch.tensor:
     return torch.tensor(idxs, dtype=torch.long) # convert to torch tensor type
 
 
-def prepare_data(division_type, files, data_path = os.path.abspath(os.path.join("..","data"))):
+def prepare_data(division_type, files, data_path):
     """
     prepare data for training in units according to devision type (sentence, paragraph or essay level)
     :param data_path: data directory path

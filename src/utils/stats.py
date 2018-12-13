@@ -2,7 +2,7 @@
 import os
 import sys
 
-from src.preprocess import get_train_test_split
+from src.utils.preprocess import get_train_test_split
 
 data_path = os.path.join("..","data")
 train_files, test_files = get_train_test_split(os.path.join(data_path,'train-test-split.csv'))
@@ -35,7 +35,7 @@ for ds in (train_files,test_files):
                      "n_tokens:     {}\n\n".format(n_essays,n_paragraphs,n_sents,n_tokens))
 
 import os
-from src.preprocess import get_train_test_split
+from src.utils.preprocess import get_train_test_split
 
 
 train, test = get_train_test_split(os.path.join("..","data","train-test-split.csv"))
