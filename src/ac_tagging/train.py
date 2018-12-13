@@ -52,7 +52,6 @@ def main(mode, config_file_path):
 
     # set train mode
     model.train()
-    h_params.n_epochs = 1000
     for epoch in range(h_params.n_epochs):
         start_time = time.time()
         acc_loss = 0.0 # accumalating loss per epoch for display
@@ -79,7 +78,7 @@ def main(mode, config_file_path):
         sys.stdout.write("===> Epoch[{}/{}]: Loss: {:.4f} , time = {:d}[s]\n".format(epoch+1, h_params.n_epochs,
                                                                                      acc_loss,int(end_time-start_time)))
 
-        if epoch in [200,300,400,500,600,700,800,900]:
+        if epoch in [25,50,75]:
             try:
                 torch.save({
                     'epoch': epoch,
