@@ -60,126 +60,6 @@ def readAnnotatedFile(ann_path: str) -> (dict, dict, dict, list, list):
 
     return propositions, prop_labels, prop_stances, supports, attacks
 
-
-class ArgDoc(object):
-    """
-    class that represents an argumentative essay (using UKP 2.0 annotations)
-    """
-    def __init__(self, base_path):
-        self.ess_id = int(base_path[-3:])  # essay id according to UKP naming convention
-        self._txt_path = base_path + ".txt"  # essay text file path
-        self._ann_path = base_path + ".ann"  # UKP annotated file path
-        # read document's text
-        with open(file=self._txt_path, mode='rt', encoding='utf8') as f:
-            self.text = f.read()
-
-        # get essay's paragraph's indices (seperated with '\n')
-        self.paragraph_offsets = self._getNewLineIndices(self.text)
-
-        # read annotated data from file
-        propositions, prop_labels, prop_stances, supports, attacks = readAnnotatedFile(self._ann_path)
-
-        # update proposition offsets, labels, stances and link types
-        inner_indices, self.prop_offsets = zip(
-            *sorted(propositions.items(), key=lambda x: x[1]))  # use the beginning index of propositions for sort
-
-        # paragraph alignmnt of propositions (ordered by proposition's offsets)
-        self.prop_paragraphs = [np.searchsorted(self.paragraph_offsets, start) - 1 for start, _ in self.prop_offsets]
-
-        # invert indices for key management
-        new_indices = {k: v for v, k in enumerate(inner_indices)}
-        n_props = len(self.prop_offsets)
-
-        # update fields with new inverted indices
-        self.prop_labels = [prop_labels[inner_indices[i]] for i in range(n_props)]
-        self.prop_stances = {new_indices[k]: v for k, v in prop_stances.items()}
-        self.supports = [(new_indices[src], new_indices[trg]) for src, trg in supports]
-        self.attacks = [(new_indices[src], new_indices[trg]) for src, trg in attacks]
-        self.links = self.supports + self.attacks
-
-    def _getNewLineIndices(self, text: str) -> np.array:
-        """
-        utility function that returns essay text's paragraphs offsets
-        """
-        i = 0  # assume first char always opens paragraph
-        paragraph_indices = []
-        while i != -1:
-            paragraph_indices.append(i)
-            i = text.find('\n', i + 1)
-        return np.array(paragraph_indices)
-
-    def visualize(self, save_path=os.getcwd()):
-        """
-        plot the essay as graph using pydot and save as .png file
-        """
-        arg_graph = pydot.Dot(graph_type='digraph')
-
-        maj_claims = [("! " + self.text[self.prop_offsets[i][0]:self.prop_offsets[i][1]]) for i in
-                      range(len(self.prop_labels)) if
-                      self.prop_labels[i] == 'MajorClaim']  # handle more than 1 major cliam for main node
-        # add the major claims node
-        head_node = pydot.Node('\n'.join(maj_claims), style='filled',
-                               fillcolor='#eeccdd')
-        arg_graph.add_node(head_node)
-
-        nodes = {}
-        # add the premise and claims nodes
-        for i in range(len(self.prop_labels)):
-            if self.prop_labels[i] == 'MajorClaim':
-                continue
-            text = self.text[self.prop_offsets[i][0]:self.prop_offsets[i][1]]
-            start = 0
-            label = []
-            next_i = -1
-            for i_c in range(1, len(text)):
-                if i_c < next_i:
-                    continue
-                if i_c % 30 == 0:
-                    next_i = text.find(" ", i_c) + 1
-                    if next_i > 0:
-                        label.append(text[start:next_i - 1])
-                        start = next_i
-                    else:
-                        label.append(text[start:])
-                        start = len(text)
-            if (i_c > start):
-                rest = " " + text[start:]
-                if len(rest.split()) == 1:
-                    label[-1] += rest
-                else:
-                    label.append(text[start:])
-
-            nodes[i] = pydot.Node(i,
-                                  label='\n'.join(label),
-                                  style='filled',
-                                  fillcolor='#ccbbdd' if self.prop_labels[i] == 'Claim' else '#aabbdd'
-                                  )
-            arg_graph.add_node(nodes[i])
-        # add edges
-        # add the stances (cliams-majorClaims) edges
-        for i, val in self.prop_stances.items():
-            tmp_edge = pydot.Edge(nodes[i], head_node,
-                                  label=val,
-                                  labelfontcolor='red' if val == "Against" else 'green',
-                                  color='red' if val == "Against" else 'green'
-                                  )
-            arg_graph.add_edge(tmp_edge)
-
-        # add the support/attacks edges
-        for src, trg in self.supports:
-            tmp_edge = pydot.Edge(nodes[src], nodes[trg])
-            arg_graph.add_edge(tmp_edge)
-        for src, trg in self.attacks:
-            tmp_edge = pydot.Edge(nodes[src], nodes[trg],
-                                  style='dotted',
-                                  color='red'
-                                  )
-            arg_graph.add_edge(tmp_edge)
-        # display and save
-        path = os.path.join(save_path, "essay{:3d}.png".format(self.ess_id).replace(" ","0"))
-        arg_graph.write_png(path)
-        print("saved png to {}".format(path))
-
 ###
 # visualize all argumentative essays and save to fixed location
 ###
@@ -294,6 +174,9 @@ PAD_SYMBOL = "PAD_SYM"
 torch.manual_seed(361)
 np.random.seed(361)
 
+RELATIONS_TYPES = ["no-relation","a supports b","a attacks b","a For b","a Against b"]
+AC_TYPES = ["Premise","Claim","MajorClaim"]
+
 def build_vocabularies(data_path,train_file_names):
     """
     read files in order to create vocabularies of tags (AC types and rel Types) and inputs (words, POSs)
@@ -323,17 +206,19 @@ def build_vocabularies(data_path,train_file_names):
     word2ix = dict((w, i) for i,w in enumerate(word_voc))
     pos2ix = dict((w, i) for i, w in enumerate(pos_voc))
     ac_tag2ix = dict((w, i) for i, w in enumerate(ac_tag_voc))
-    rel_2ix = dict((w, i) for i, w in enumerate(ac_rel_voc))
+    ac_type2ix = dict((w, i) for i, w in enumerate(AC_TYPES))
+    rel2ix = dict((w, i) for i, w in enumerate(RELATIONS_TYPES))
 
     # save the vocabs to processed data folder for later use
     voc_dir = os.path.abspath(os.path.join("..","data","vocabularies"))
     if not os.path.exists(voc_dir):
         os.mkdir(voc_dir)
-    for name, dic in (("word_2ix", word2ix), ("pos2ix", pos2ix), ("ac_tag2ix", ac_tag2ix), ("ac_rel2ix", rel_2ix)):
+    for name, dic in (("word_2ix", word2ix), ("pos2ix", pos2ix), ("ac_tag2ix", ac_tag2ix),
+                      ("rel2x",rel2ix),("type2ix",ac_type2ix)):
         pickle.dump(dic,open(os.path.join(data_path,"vocabularies",name + ".pcl"),"wb"))
 
     sys.stdout.write("wrote vocabularies to {}\n".format(os.path.abspath(voc_dir)))
-    return word2ix, pos2ix, ac_tag2ix, rel_2ix
+    return word2ix, pos2ix, ac_tag2ix, ac_type2ix, rel2ix
 
 
 # use the original train-test split supplied with the UKP dataset
@@ -477,7 +362,12 @@ def prepare_sequence(seq:[str], to_ix:dict) -> torch.tensor:
     :param to_ix: dictionary incexing the tokens/POSs/tags vocabulary
     :return: matching torch.tensor of integers representing input lists
     """
-    idxs = [to_ix[w] for w in seq] # replace input tokens/POSs with matching indices
+    idxs = []
+    for w in seq:
+        if w in to_ix.keys():
+            idxs.append(to_ix[w])
+        else:
+            idxs.append(to_ix[UNK_TOKEN_SYMBOL])
     return torch.tensor(idxs, dtype=torch.long) # convert to torch tensor type
 
 

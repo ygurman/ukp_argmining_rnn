@@ -13,8 +13,6 @@ def main(mode, config_file_path, trained_model_path):
     h_params = HyperParams(config_file_path)
     from src.utils.preprocess import get_train_test_split
     from src.utils.preprocess import prepare_data
-    from src.ac_tagging.models import BiLSTM_Segmentor_Classifier
-    from src.ac_tagging.models import BiLSTM_Segmentor_Classifier_no_pos
 
     torch.manual_seed(h_params.rand_seed)
     model_dir = h_params.models_dir
