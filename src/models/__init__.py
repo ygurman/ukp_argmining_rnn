@@ -2,9 +2,9 @@
 import pickle
 
 import torch
+import torch.autograd as autograd
 import torch.nn as nn
 import torch.nn.functional as F
-import torch.autograd as autograd
 
 
 class BiLSTM_Segmentor_Classifier(nn.Module):
@@ -128,7 +128,7 @@ class BiLSTM_Segmentor_Classifier_no_pos(nn.Module):
         tag_scores = F.log_softmax(tag_space, dim=-1)
         return tag_scores
 
-class biLSTMRelationClassifier(nn.Module):
+class BiLSTMRelationClassifier(nn.Module):
     def __init__(self, d_word_embd, d_pos_embd,
                  d_h1, n_lstm_layers, word_voc_size,
                  pos_voc_size, ac_tagset_size, batch_size,
@@ -241,14 +241,15 @@ class biLSTMRelationClassifier(nn.Module):
 
         return tag_scores
 
-class blandRelationClassifier(nn.Module):
+class BlandRelationClassifier(nn.Module):
     """
     a leaner model for relation classification w/o constructed parameters embeddings
     """
     def __init__(self, d_word_embd, d_pos_embd,
                  d_h1, n_lstm_layers, word_voc_size,
                  pos_voc_size, ac_tagset_size, batch_size,
-                 device, pretraind_embd_layer_path=None,rel_tagset_size=9, d_h2 = 50, d_h3=25):
+                 device, pretraind_embd_layer_path=None,rel_tagset_size=9, d_tag_embd=25,
+                 d_small_embd=5,d_distance_embd=15, d_h2 = 50, d_h3=25):
         super().__init__()
 
         ## part 1 - using pretrained segmentor classifier up until LSTM layer representation

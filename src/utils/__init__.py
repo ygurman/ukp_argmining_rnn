@@ -1,12 +1,14 @@
 # read conf file
 import os
-from enum import Enum
-import os
 import pickle
 import sys
 from collections import defaultdict
+from enum import Enum
+
 from tqdm import tqdm
+
 from src.utils.preprocess import prepare_sequence
+
 
 class ArgComp(object):
     """
@@ -35,7 +37,7 @@ class ArgComp(object):
     def same_paragraph(self,other):
         return self.paragraph == other.paragraph
 
-def get_all_relations_from_tsv(essay_tsv_path,save_path=None):
+def get_all_relations_from_tsv(essay_tsv_path: str, save_path: str = None) -> object:
     """
     :param essay_tsv_path: pre-processed Conll style tsv file
     :return: dictionary of all ACs (key=ac_id), dictionary of all relations (key=tuple of ids) - non related ACs pairs included for negative examples
@@ -69,7 +71,7 @@ def get_all_relations_from_tsv(essay_tsv_path,save_path=None):
                 # handle ac beginning
                 if role == "B":
                     span_begin = i_line
-                    offsets.append(i_line+1)
+                    offsets.append(i_line)
 
                 # handle either in-component or beginning
                 if role != 'O':
@@ -128,8 +130,8 @@ def get_all_relations_from_tsv(essay_tsv_path,save_path=None):
 
     if save_path:
         essay = os.path.split(essay_tsv_path)[-1][:-4]
-        pickle.dump(relations_dict,open(os.path.join(save_path,"{}_relations_dict.pcl".format(essay)),'wt'))
-        pickle.dump(ac_dict, open(os.path.join(save_path, "{}_ac_dict.pcl".format(essay)), 'wt'))
+        pickle.dump(relations_dict,open(os.path.join(save_path,"{}_relations_dict.pcl".format(essay)),'wb'))
+        pickle.dump(ac_dict, open(os.path.join(save_path, "{}_ac_dict.pcl".format(essay)), 'wb'))
 
     return ac_dict, relations_dict
 
@@ -233,45 +235,69 @@ def convert_results_to_tsv(results_file_path, vocab_dir_path,data_path):
         sys.stdout.write("wrote {:d} tsvs to {}".format(len(essays),dest_dir))
 
 def prepare_ac_for_model(ac:ArgComp, vocab_path):
+    """
+    convert all members to indexed torch.tensors
+    :param ac: argument component
+    :param vocab_path:
+    :return:
+    """
     word2ix = pickle.load(open(os.path.join(vocab_path,"combined_word_voc_word2ix.pcl"),'rb'))
     pos2ix = pickle.load(open(os.path.join(vocab_path, "pos2ix.pcl"), 'rb'))
     type2ix = pickle.load(open(os.path.join(vocab_path, "type2ix.pcl"), 'rb'))
 
     ac.tokens = prepare_sequence(ac.tokens,word2ix)
     ac.poss = prepare_sequence(ac.poss,pos2ix)
-    ac.type = prepare_sequence(ac.type,type2ix)
+    ac.type = type2ix[ac.type]
 
 
 class HyperParams(object):
     def __init__(self, conf_file_path):
-        hp_dict = dict()
+        self.hp_dict = dict()
         with open(conf_file_path, 'rt') as f:
             for line in f:
                 if line[0] != '#':
-                    prop, val = line.strip().split(": ")
-                    hp_dict[prop] = val
+                    try:
+                        prop, val = line.strip().split(": ")
+                    except ValueError:
+                        prop = line.split(":")[0]
+                        val = None
+                    self.hp_dict[prop] = val
+
         # segmentor-classifier parameters
-        self.d_word_embd = int(hp_dict["d_word_embd"])
-        self.d_pos_embd = int(hp_dict["d_pos_embd"])
-        self.n_lstm_layers = int(hp_dict["n_lstm_layers"])
-        self.d_h1 = int(hp_dict['d_h1'])
-        self.word_voc_size = int(hp_dict["word_voc_size"])
-        self.pos_voc_size = int(hp_dict["pos_voc_size"])
-        self.ac_tagset_size = int(hp_dict["ac_tagset_size"])
-        self.pretraind_embd_layer_path = os.path.abspath(hp_dict['pretraind_embd_layer_path'])
-        self.batch_size = int(hp_dict['batch_size'])
-        self.use_pos = True if hp_dict['use_pos'] == "True" else False
+        self.d_word_embd = int(self.hp_dict["d_word_embd"])
+        self.d_pos_embd = int(self.hp_dict["d_pos_embd"])
+        self.n_lstm_layers = int(self.hp_dict["n_lstm_layers"])
+        self.d_h1 = int(self.hp_dict['d_h1'])
+        self.word_voc_size = int(self.hp_dict["word_voc_size"])
+        self.pos_voc_size = int(self.hp_dict["pos_voc_size"])
+        self.ac_tagset_size = int(self.hp_dict["ac_tagset_size"])
+        self.pretraind_embd_layer_path = os.path.abspath(self.hp_dict['pretraind_embd_layer_path'])
+        self.batch_size = int(self.hp_dict['batch_size'])
+        self.use_pos = True if self.hp_dict['use_pos'] == "True" else False
         # training and optimization parameters
-        self.clip_threshold = int(hp_dict['clip_threshold'])
-        self.learning_rate = float(hp_dict['learning_rate'])
-        self.weight_decay = float(hp_dict['weight_decay'])
-        self.n_epochs = int(hp_dict['n_epochs'])
+        self.clip_threshold = int(self.hp_dict['clip_threshold'])
+        self.learning_rate = float(self.hp_dict['learning_rate'])
+        self.weight_decay = float(self.hp_dict['weight_decay'])
+        self.n_epochs = int(self.hp_dict['n_epochs'])
         # general parameters
-        self.models_dir = os.path.join(hp_dict['base_dir'],"models")
-        self.data_dir = os.path.join(hp_dict['base_dir'],"data")
+        self.models_dir = os.path.join(self.hp_dict['base_dir'],"models")
+        self.data_dir = os.path.join(self.hp_dict['base_dir'],"data")
         self.vocab_dir = os.path.join(self.data_dir,"vocabularies")
-        self.exps_dir = os.path.join(hp_dict['base_dir'],"exps")
-        self.rand_seed = int(hp_dict['rand_seed'])
+        self.exps_dir = os.path.join(self.hp_dict['base_dir'],"exps")
+        self.rand_seed = int(self.hp_dict['rand_seed'])
+
+        # relation classifier parameters
+        try:
+            self.rel_tagset_size = int(self.hp_dict['rel_tagset_size'])
+            self.d_tag_embd = int(self.hp_dict['d_tag_embd'])
+            self.d_small_embd = int(self.hp_dict['d_small_embd'])
+            self.d_distance_embd = int(self.hp_dict['d_distance_embd'])
+            self.d_h2 = int(self.hp_dict['d_h2'])
+            self.d_h3 = int(self.hp_dict['d_h3'])
+            self.pretrained_segmentor_path = os.path.abspath(self.hp_dict['pretrained_segmentor_path'])
+
+        except KeyError:
+            pass # happens only when using the first classifier in which case those parameters are not relevant)
 
 class DivisionResolution(Enum):
     SENTENCE = 0
@@ -282,3 +308,31 @@ class DivisionResolution(Enum):
 mode_dict = {'s': DivisionResolution.SENTENCE,
              'p': DivisionResolution.PARAGRAPH,
              'e': DivisionResolution.ESSAY}
+
+def prepare_relations_data(files, data_dir, vocab_dir,save:bool =False):
+    """
+    assume that if "save" option wasnt true than dictionaries already caculated and stored in the processed data path
+    """
+    prepared_items = []
+    for essay in files:
+        if save:
+            ac_dict, rel_dict = get_all_relations_from_tsv(os.path.join(data_dir,"processed",essay+".tsv"),os.path.join(data_dir,"processed") if save else None)
+            # prepare all argument components
+            for ac in ac_dict.values():
+                prepare_ac_for_model(ac, vocab_dir)
+                pickle.dump(ac_dict,os.path.join(data_dir,"processed",essay+"_relations_dict.pcl"))
+        else:
+            ac_dict = pickle.load(open(os.path.join(data_dir,"processed",essay+"_ac_dict_ready.pcl"),'rb'))
+            rel_dict = pickle.load(open(os.path.join(data_dir,"processed",essay+"_relations_dict.pcl"),'rb'))
+
+        # order relation and convert to tensor
+        rel2ix = pickle.load(open(os.path.join(vocab_dir,"rel2ix.pcl"),'rb'))
+
+        ac_pairs = []
+        relation_tags = []
+        for ac_pair, rel_type in rel_dict.items():
+            ac_pairs.append(ac_pair)
+            relation_tags.append(rel_type)
+
+        prepared_items.append((ac_dict,ac_pairs,prepare_sequence(relation_tags,rel2ix)))
+    return prepared_items

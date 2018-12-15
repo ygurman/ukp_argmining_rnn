@@ -1,20 +1,21 @@
 # prediction using the segmentor-classifier for ACs
+import os
 import pickle
 import sys
 from argparse import ArgumentParser
-import os
+
 import torch
 
 from src.ac_tagging import post_process
+from src.models import BiLSTM_Segmentor_Classifier, BiLSTM_Segmentor_Classifier_no_pos
 from src.utils import HyperParams, mode_dict
+
 
 def main(mode, config_file_path, trained_model_path):
     # train the segmentor-classifier first
     h_params = HyperParams(config_file_path)
     from src.utils.preprocess import get_train_test_split
     from src.utils.preprocess import prepare_data
-    from src.ac_tagging.models import BiLSTM_Segmentor_Classifier
-    from src.ac_tagging.models import BiLSTM_Segmentor_Classifier_no_pos
 
     torch.manual_seed(h_params.rand_seed)
     _, test_files = get_train_test_split(os.path.abspath(os.path.join("..", "data", "train-test-split.csv")))
@@ -26,7 +27,7 @@ def main(mode, config_file_path, trained_model_path):
                                 h_params.ac_tagset_size, h_params.batch_size, device,
                                 h_params.pretraind_embd_layer_path)
     # load trained model state-dict
-    checkpoint = torch.load(trained_model_path) #TODO - uncomment when back to normal
+    checkpoint = torch.load(trained_model_path)
     model.load_state_dict(checkpoint['model_state_dict'])
     ## set CUDA if available
     if torch.cuda.is_available():
@@ -43,7 +44,7 @@ def main(mode, config_file_path, trained_model_path):
     ac_tag2ix = pickle.load(open(os.path.join(h_params.vocab_dir,"ac_tag2ix.pcl"),'rb'))
     corrected_tags = post_process(preds, ac_tag2ix)
     # save results
-    results_file = os.path.join(h_params.exps_dir,os.path.split(trained_model_path)[-1][:-3]+".results") # TODO - uncomment when back to normal
+    results_file = os.path.join(h_params.exps_dir,os.path.split(trained_model_path)[-1][:-3]+".results")
 
     true_tags = [ac_tags.tolist() for _,_,ac_tags in test_data]
     with open(results_file,'wt') as f:

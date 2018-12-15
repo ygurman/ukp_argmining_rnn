@@ -8,24 +8,57 @@
 
 ### NLTK's Stanfords CoreNLP wrapper - https://github.com/nltk/nltk/wiki/Stanford-CoreNLP-API-in-NLTK
 
-import subprocess
-from tqdm import tqdm
 import os
-import numpy as np
 import pickle
+import subprocess
 import sys
 from typing import Dict
+
+import numpy as np
 import torch
 import torch.nn as nn
-import pydot
 from nltk.parse import CoreNLPParser
 from nltk.tokenize import sent_tokenize
+from tqdm import tqdm
 
 EMPTY_SIGN = "~"
 
 ###
 # generic .ann files related methods
 ###
+
+class ArgDoc(object):
+    def __init__(self, base_path):
+        self.ess_id = int(base_path[-3:])  # essay id according to UKP naming convention
+        self._txt_path = base_path + ".txt"  # essay text file path
+        self._ann_path = base_path + ".ann"  # UKP annotated file path
+        # read document's text
+        with open(file=self._txt_path, mode='rt', encoding='utf8') as f:
+            self.text = f.read()
+
+        # get essay's paragraph's indices (seperated with '\n')
+        self.paragraph_offsets = getNewLineIndices(self.text)
+
+        # read annotated data from file
+        propositions, prop_labels, prop_stances, supports, attacks = readAnnotatedFile(self._ann_path)
+
+        # update proposition offsets, labels, stances and link types
+        inner_indices, self.prop_offsets = zip(
+            *sorted(propositions.items(), key=lambda x: x[1]))  # use the beginning index of propositions for sort
+
+        # paragraph alignmnt of propositions (ordered by proposition's offsets)
+        self.prop_paragraphs = [np.searchsorted(self.paragraph_offsets, start) - 1 for start, _ in self.prop_offsets]
+
+        # invert indices for key management
+        new_indices = {k: v for v, k in enumerate(inner_indices)}
+        n_props = len(self.prop_offsets)
+
+        # update fields with new inverted indices
+        self.prop_labels = [prop_labels[inner_indices[i]] for i in range(n_props)]
+        self.prop_stances = {new_indices[k]: v for k, v in prop_stances.items()}
+        self.supports = [(new_indices[src], new_indices[trg]) for src, trg in supports]
+        self.attacks = [(new_indices[src], new_indices[trg]) for src, trg in attacks]
+        self.links = self.supports + self.attacks
 
 def readAnnotatedFile(ann_path: str) -> (dict, dict, dict, list, list):
     """
@@ -174,7 +207,8 @@ PAD_SYMBOL = "PAD_SYM"
 torch.manual_seed(361)
 np.random.seed(361)
 
-RELATIONS_TYPES = ["no-relation","a supports b","a attacks b","a For b","a Against b"]
+RELATIONS_TYPES = ["no-relation","a supports b","a attacks b","a For b","a Against b",
+                   "b supports a", "b attacks a", "b For a", "b Against a"]
 AC_TYPES = ["Premise","Claim","MajorClaim"]
 
 def build_vocabularies(data_path,train_file_names):
