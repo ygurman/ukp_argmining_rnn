@@ -6,7 +6,6 @@ from argparse import ArgumentParser
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from tqdm import tqdm
 
 from src.models import BiLSTMRelationClassifier, BlandRelationClassifier
 from src.utils import HyperParams, prepare_relations_data
@@ -33,21 +32,20 @@ def main(config_file_path):
                                h_params.d_distance_embd, h_params.d_h2, h_params.d_h3)
 
     model.to(device)
-
-    old_state_dict = dict(model.state_dict()) # TODO - delete
-
     # if using previous trained model weights for transfer learning (weights)
     if h_params.pretrained_segmentor_path:
         checkpoint = torch.load(h_params.pretrained_segmentor_path)
-        pre_trained_state_dict = checkpoint['model_state_dict']
-        model.load_state_dict(pre_trained_state_dict,strict=False)
+        pre_trained_state_dict = dict(checkpoint['model_state_dict'])
+        model_dict = dict(model.state_dict())
+        # filter unused keys
+        pre_trained_state_dict = {param:value for param, value in pre_trained_state_dict.items() if param in model_dict}
+        # overwrite new parametes in the model dictionary
+        for param, value in pre_trained_state_dict.items():
+            model_dict[param] = value
+        # update state dict in the model
+        model.load_state_dict(model_dict)
 
-    new_state_dict = dict(model.state_dict()) # TODO - delete
-    for o_k,o_p in old_state_dict.items(): # TODO - delete
-        n_p = new_state_dict[o_k]
-        a = torch.sum((o_p != n_p)) != 0
-        if torch.sum((o_p != n_p)) != 0 : # TODO - delete
-            print ("{}\n{}\t{}\n".format(o_k,o_p,new_state_dict[o_k])) # TODO - delete
+
 
     # set loss function and adam optimizer (using negative log likelihood with adam optimizer
     loss_function = nn.NLLLoss()
@@ -74,20 +72,23 @@ def main(config_file_path):
     for epoch in range(h_params.n_epochs):
         start_time = time.time()
         acc_loss = 0.0  # accumalating loss per epoch for display
-
-        for (ac_dict, ac_pairs, rel_tags) in tqdm(training_data):
+        done = 1
+        ess_total_time = 0
+        for (ac_dict, ac_pairs, rel_tags) in training_data:
+            ess_start_time = time.time()
             for i_rel in range(len(ac_pairs)):
                 a_id, b_id = ac_pairs[i_rel][0],ac_pairs[i_rel][1]
                 ac_a, ac_b = ac_dict[a_id], ac_dict[b_id]
                 # reset accumalated gradients and lstm's hidden state between iterations
                 model.zero_grad()
                 model.hidden1 = model.init_hidden(model.h1dimension)
+                model.hidden2 = model.init_hidden(model.h2dimension)
 
                 # make a forward pass
                 tag_scores = model((ac_a,ac_b))
 
                 # backprop
-                loss = loss_function(tag_scores, rel_tags[i_rel].to(device))
+                loss = loss_function(tag_scores, rel_tags[i_rel].view(1).to(device))
                 acc_loss += loss.item()
                 loss.backward()
 
@@ -96,13 +97,16 @@ def main(config_file_path):
 
                 # call optimizer step
                 optimizer.step()
+            ess_total_time += time.time() - ess_start_time
+            sys.stdout.write("epoch:{}\tfinished {}/322 essays in {:.2f}[s] per essay\n".format(epoch,done, ess_total_time/done))
+            done += 1
         end_time = time.time()
         # output stats
         sys.stdout.write("===> Epoch[{}/{}]: Loss: {:.4f} , time = {:d}[s]\n".format(epoch + 1, h_params.n_epochs,
                                                                                      acc_loss,
                                                                                      int(end_time - start_time)))
 
-        if epoch%25 ==0:
+        if (epoch+1)%25 ==0:
             try:
                 torch.save({
                     'epoch': epoch,

@@ -166,7 +166,7 @@ class BiLSTMRelationClassifier(nn.Module):
         self.embd_distance = nn.Embedding(num_embeddings=30,embedding_dim=d_distance_embd) # bounded by the maximal id
 
         # 2 another biLSTM learning representation of the concatinated ACs using the new embedded features
-        self.lstm2 = nn.LSTM(input_size=d_h1 + d_distance_embd + d_small_embd * 2 + d_distance_embd, hidden_size=d_h2,
+        self.lstm2 = nn.LSTM(input_size=d_h1 * 2 + d_tag_embd + d_small_embd * 2 + d_distance_embd, hidden_size=d_h2,
                              num_layers=n_lstm_layers, bidirectional=True)
         self.hidden2 = self.init_hidden(self.h2dimension)
         self.fc1 = nn.Linear(in_features=2 * d_h2, out_features=d_h3)
@@ -190,29 +190,29 @@ class BiLSTMRelationClassifier(nn.Module):
         ## part 1 - old lstm representation
         # pass both to get lstm hidden representation of AC components
         ac_a, ac_b = prepared_sequence
-        a_w_embd = self.embd(ac_a.tokens)
-        b_w_embd = self.embd_word_layer(ac_b.tokens)
-        a_pos_embd = self.embd_pos_layer(ac_a.poss)
-        b_pos_embd = self.embd_pos_layer(ac_b.poss)
+        a_w_embd = self.embd_word_layer(ac_a.tokens.to(self.device))
+        b_w_embd = self.embd_word_layer(ac_b.tokens.to(self.device))
+        a_pos_embd = self.embd_pos_layer(ac_a.poss.to(self.device))
+        b_pos_embd = self.embd_pos_layer(ac_b.poss.to(self.device))
         # concatenate pos and word embeddings
         a_embd_output = torch.cat((a_w_embd, a_pos_embd), -1)
         b_embd_output = torch.cat((b_w_embd, b_pos_embd), -1)
 
         # pass embedding layer output to lstm
         a_lstm_output, self.hidden1 = self.lstm1(a_embd_output.view(a_embd_output.size(0), self.batch_size, -1), self.hidden1)
-        b_lstm_output, self.hidden1 = self.lstm1(a_embd_output.view(b_embd_output.size(0), self.batch_size, -1),self.hidden1)
+        b_lstm_output, self.hidden1 = self.lstm1(b_embd_output.view(b_embd_output.size(0), self.batch_size, -1),self.hidden1)
 
         a_len = len(a_lstm_output)
         b_len = len(b_lstm_output)
 
         ## part 2 -linear combinations
         # ac features - duplicate and concat to appropriate ac
-        a_embd_ac_tag_layer = self.embd_ac_tag_layer(ac_a.type)
-        b_embd_ac_tag_layer = self.embd_ac_tag_layer(ac_b.type)
+        a_embd_ac_tag_layer = self.embd_ac_tag_layer(torch.tensor(ac_a.type).to(self.device))
+        b_embd_ac_tag_layer = self.embd_ac_tag_layer(torch.tensor(ac_b.type).to(self.device))
 
         # append tag embeddings to each component
         a = torch.cat([a_lstm_output.view(a_len,-1),a_embd_ac_tag_layer.repeat(a_len,1)],dim=-1)
-        b = torch.cat([b_lstm_output.view(b_len,-1),b_embd_ac_tag_layer.repeat(a_len,1)],dim=-1)
+        b = torch.cat([b_lstm_output.view(b_len,-1),b_embd_ac_tag_layer.repeat(b_len,1)],dim=-1)
 
         # create combined representation (by concatination)
         ab = torch.cat([a,b],dim=0)
@@ -225,19 +225,19 @@ class BiLSTMRelationClassifier(nn.Module):
         combined_embds = torch.cat([embd_a_before_b,embd_same_par,embd_dist],dim=-1)
 
         # add constructed features embeddings to representation (size (len_a+len_b)*(hidden1+all the embeddings))
-        ab = torch.cat([ab,combined_embds.repeat(a_len,1)],dim=-1)
+        ab = torch.cat([ab,combined_embds.repeat(a_len+b_len,1)],dim=-1)
 
         # pass through second lstm with new features
-        lstm2_out, self.hidden2 = self.lstm2(ab.view(ab.size(0),self.batch_size,-1),self.hidden2)
+        lstm2_out, self.hidden2 = self.lstm2(ab.view(a_len+b_len,self.batch_size,-1),self.hidden2)
 
         # pass through second linear layer with ReLU activation
         ab = F.relu(self.fc1(lstm2_out.view(len(ab),-1)))
 
         # flatten (by mean) to hidden dimension and pass through last liner layer for mapping with logsoftmax
         ab = F.relu(self.fc2(ab))
-        ab = ab.mean(dim=0)
+        ab = ab.sum(dim=0)
 
-        tag_scores = F.log_softmax(ab.view(self.rel_tagset_size,-1))
+        tag_scores = F.log_softmax(ab,dim=0).view(1,-1)
 
         return tag_scores
 
