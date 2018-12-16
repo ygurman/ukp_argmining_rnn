@@ -7,10 +7,11 @@ LSTM based e2e argument mining (AC segmentation, Classification and Relation Cla
  - packages used: pytorch, pydot, pandas, nltk (sentence tokenizer only)
  - clone the git
  - download stanford corenlp (to run as local server) and change first line in start_core_nlp_server.sh to match your downloawd location.
- - run the "download_glove_pretrained_embds.sh" [downloads embeddings
+ - run the "download_glove_pretrained_embds.sh" (downloads embeddings)
  - make sure the directory tree matches the git, as the preprocessing and data handeling depends on that
 
 2. preprocess
+ - run ./shell_scripts/start_core_nlp_server.sh
  - run src/utils/preprocess.py with desired flags: #user@host python3 ./src/utils/preprocess.py [-c] [-b] [-v] [-d ../data]
   * -c : converts the whole dataset to CONLL-like tsv format (save to ./data/processed
   * -b : builds vocabularies (symbols to indices) and pretrained embeddings layer and stores them in ./data/vocabularies
