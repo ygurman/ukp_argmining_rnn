@@ -401,10 +401,10 @@ class BaselineRelationClassifier(nn.Module):
         ## part 1 - old lstm representation
         # pass both to get lstm hidden representation of AC components
         ac_a, ac_b = prepared_sequence
-        a_w_embd = self.embd(ac_a.tokens)
-        b_w_embd = self.embd_word_layer(ac_b.tokens)
-        a_pos_embd = self.embd_pos_layer(ac_a.poss)
-        b_pos_embd = self.embd_pos_layer(ac_b.poss)
+        a_w_embd = self.embd_pos_layer(ac_a.tokens.to(self.device))
+        b_w_embd = self.embd_word_layer(ac_b.tokens.to(self.device))
+        a_pos_embd = self.embd_pos_layer(ac_a.poss.to(self.device))
+        b_pos_embd = self.embd_pos_layer(ac_b.poss.to(self.device))
         # concatenate pos and word embeddings
         a_embd_output = torch.cat((a_w_embd, a_pos_embd), -1)
         b_embd_output = torch.cat((b_w_embd, b_pos_embd), -1)
@@ -491,10 +491,10 @@ class BaselineConstructedRelationClassifier(nn.Module):
         ## part 1 - old lstm representation
         # pass both to get lstm hidden representation of AC components
         ac_a, ac_b = prepared_sequence
-        a_w_embd = self.embd(ac_a.tokens)
-        b_w_embd = self.embd_word_layer(ac_b.tokens)
-        a_pos_embd = self.embd_pos_layer(ac_a.poss)
-        b_pos_embd = self.embd_pos_layer(ac_b.poss)
+        a_w_embd = self.embd(ac_a.tokens.to(self.device))
+        b_w_embd = self.embd_word_layer(ac_b.tokens.to(self.device))
+        a_pos_embd = self.embd_pos_layer(ac_a.poss.to(self.device))
+        b_pos_embd = self.embd_pos_layer(ac_b.poss.to(self.device))
         # concatenate pos and word embeddings
         a_embd_output = torch.cat((a_w_embd, a_pos_embd), -1)
         b_embd_output = torch.cat((b_w_embd, b_pos_embd), -1)

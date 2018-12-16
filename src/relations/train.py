@@ -8,12 +8,13 @@ import torch.nn as nn
 import torch.optim as optim
 from tqdm import tqdm
 
-from src.models import BiLSTMRelationClassifier, BlandRelationClassifier
+from src.models import BiLSTMRelationClassifier, BlandRelationClassifier, BaselineConstructedRelationClassifier, \
+    BaselineRelationClassifier
 from src.utils import HyperParams, prepare_relations_data
 from src.utils.preprocess import get_train_test_split
 
 
-def main(config_file_path):
+def main(config_file_path, baseline):
     # manual random seed
     h_params: HyperParams = HyperParams(config_file_path)
     torch.manual_seed(h_params.rand_seed)
@@ -24,7 +25,10 @@ def main(config_file_path):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     # define use of constructed features aided model or bland lstm - basically a 2 layered consequtive lstm with further 2 linear layers and ReLU activations
-    RelationClassifier = BiLSTMRelationClassifier if h_params.d_distance_embd!=0 else BlandRelationClassifier
+    if baseline:
+        RelationClassifier = BaselineConstructedRelationClassifier if h_params.d_distance_embd != 0 else BaselineRelationClassifier
+    else:
+        RelationClassifier = BiLSTMRelationClassifier if h_params.d_distance_embd!=0 else BlandRelationClassifier
 
     model = RelationClassifier(h_params.d_word_embd, h_params.d_pos_embd, h_params.d_h1,h_params.n_lstm_layers,
                                h_params.word_voc_size, h_params.pos_voc_size,h_params.ac_tagset_size,
@@ -83,7 +87,8 @@ def main(config_file_path):
                     # reset accumalated gradients and lstm's hidden state between iterations
                     model.zero_grad()
                     model.hidden1 = model.init_hidden(model.h1dimension)
-                    model.hidden2 = model.init_hidden(model.h2dimension)
+                    if not baseline:
+                        model.hidden2 = model.init_hidden(model.h2dimension)
 
                     # make a forward pass
                     tag_scores = model((ac_a,ac_b))
@@ -134,5 +139,7 @@ def main(config_file_path):
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument('-cp','--config_path',help= " path to learning parameters file")
+    parser.add_argument('-bl','--baseline',action='store_true', help= "use baseline model")
+
     args = parser.parse_args(sys.argv[1:])
-    main(os.path.abspath(args.config_path))
+    main(os.path.abspath(args.config_path),args.baseline)
