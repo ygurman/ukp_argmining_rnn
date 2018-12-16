@@ -24,7 +24,7 @@ def main(config_file_path):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     # define use of constructed features aided model or bland lstm - basically a 2 layered consequtive lstm with further 2 linear layers and ReLU activations
-    RelationClassifier = BiLSTMRelationClassifier if h_params.d_distance_embd else BlandRelationClassifier
+    RelationClassifier = BiLSTMRelationClassifier if h_params.d_distance_embd!=0 else BlandRelationClassifier
 
     model = RelationClassifier(h_params.d_word_embd, h_params.d_pos_embd, h_params.d_h1,h_params.n_lstm_layers,
                                h_params.word_voc_size, h_params.pos_voc_size,h_params.ac_tagset_size,
