@@ -224,10 +224,10 @@ this	DT	I-Premise	12	supports:9
 kind	NN	I-Premise	12	supports:9
 of	IN	I-Premise	12	supports:9
 experience	NN	I-Premise	12	supports:9
-.	.	I-Claim	13	For:~
+.	.	O	~	~
 # paragraph 4
 # sent
-Seeing	VBG	I-Claim	13	For:~
+Seeing	VBG	B-Claim	13	For:~
 an	DT	I-Claim	13	For:~
 art	NN	I-Claim	13	For:~
 work	NN	I-Claim	13	For:~
@@ -250,8 +250,8 @@ eyes	NNS	I-Claim	13	For:~
 # sent
 For	IN	O	~	~
 instance	NN	O	~	~
-,	,	I-Premise	14	supports:13
-you	PRP	I-Premise	14	supports:13
+,	,	O	~	~
+you	PRP	B-Premise	14	supports:13
 ca	MD	I-Premise	14	supports:13
 n't	RB	I-Premise	14	supports:13
 see	VB	I-Premise	14	supports:13
@@ -277,8 +277,8 @@ artist	NN	I-Premise	14	supports:13
 What	WP	O	~	~
 's	VBZ	O	~	~
 more	JJR	O	~	~
-,	,	I-Premise	15	supports:13
-not	RB	I-Premise	15	supports:13
+,	,	O	~	~
+not	RB	B-Premise	15	supports:13
 all	PDT	I-Premise	15	supports:13
 the	DT	I-Premise	15	supports:13
 details	NNS	I-Premise	15	supports:13
@@ -292,15 +292,15 @@ on	IN	I-Premise	15	supports:13
 the	DT	I-Premise	15	supports:13
 computer	NN	I-Premise	15	supports:13
 screen	NN	I-Premise	15	supports:13
-.	.	I-Premise	16	supports:13
+.	.	O	~	~
 # sent
-Some	DT	I-Premise	16	supports:13
+Some	DT	B-Premise	16	supports:13
 details	NNS	I-Premise	16	supports:13
 might	MD	I-Premise	16	supports:13
 be	VB	I-Premise	16	supports:13
 dim	JJ	I-Premise	16	supports:13
 since	IN	O	~	~
-the	DT	I-Premise	17	supports:16
+the	DT	B-Premise	17	supports:16
 resolution	NN	I-Premise	17	supports:16
 ratio	NN	I-Premise	17	supports:16
 of	IN	I-Premise	17	supports:16
@@ -310,9 +310,9 @@ is	VBZ	I-Premise	17	supports:16
 not	RB	I-Premise	17	supports:16
 high	JJ	I-Premise	17	supports:16
 enough	RB	I-Premise	17	supports:16
-.	.	I-Premise	18	supports:13
+.	.	O	~	~
 # sent
-These	DT	I-Premise	18	supports:13
+These	DT	B-Premise	18	supports:13
 may	MD	I-Premise	18	supports:13
 influence	VB	I-Premise	18	supports:13
 the	DT	I-Premise	18	supports:13
@@ -332,7 +332,7 @@ conclusion	NN	O	~	~
 ,	,	O	~	~
 I	PRP	O	~	~
 believe	VBP	O	~	~
-we	PRP	I-MajorClaim	19	~
+we	PRP	B-MajorClaim	19	~
 still	RB	I-MajorClaim	19	~
 need	VBP	I-MajorClaim	19	~
 museums	NNS	I-MajorClaim	19	~
@@ -340,7 +340,7 @@ and	CC	I-MajorClaim	19	~
 art	NN	I-MajorClaim	19	~
 galleries	NNS	I-MajorClaim	19	~
 but	CC	O	~	~
-computers	NNS	I-Claim	20	Against:~
+computers	NNS	B-Claim	20	Against:~
 can	MD	I-Claim	20	Against:~
 be	VB	I-Claim	20	Against:~
 introduced	VBN	I-Claim	20	Against:~

@@ -1,10 +1,13 @@
 # prediction using the segmentor-classifier for ACs
+import os
 import pickle
 import sys
 from argparse import ArgumentParser
-import os
+
 import torch
+
 from src.ac_tagging import post_process
+from src.models import BiLSTM_Segmentor_Classifier, BiLSTM_Segmentor_Classifier_no_pos
 from src.utils import HyperParams, DivisionResolution, mode_dict
 
 
@@ -17,7 +20,8 @@ def main(mode, config_file_path, trained_model_path):
     torch.manual_seed(h_params.rand_seed)
     model_dir = h_params.models_dir
     all_models = os.listdir(model_dir)
-    for model_name in all_models:
+    only_best = [m for m in all_models if m.find("2018-12-15") != -1] # delete TODO
+    for model_name in only_best:
         h_params.use_pos = True if model_name.find("no_POS") == -1 else False
         for mode in [DivisionResolution.ESSAY,DivisionResolution.SENTENCE,DivisionResolution.PARAGRAPH]:
             _, test_files = get_train_test_split(os.path.abspath(os.path.join(h_params.data_dir, "train-test-split.csv")))

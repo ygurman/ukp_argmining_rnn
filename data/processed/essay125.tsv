@@ -270,9 +270,9 @@ Brazil	NNP	I-Premise	8	supports:7
 Argentina	NNP	I-Premise	8	supports:7
 ,	,	I-Premise	8	supports:7
 etc.	FW	I-Premise	8	supports:7
-.	.	B-Premise	9	supports:7
+.	.	O	~	~
 # sent
-And	CC	I-Premise	9	supports:7
+And	CC	B-Premise	9	supports:7
 he	PRP	I-Premise	9	supports:7
 told	VBD	I-Premise	9	supports:7
 me	PRP	I-Premise	9	supports:7
@@ -314,9 +314,9 @@ essential	JJ	I-Claim	10	For:~
 function	NN	I-Claim	10	For:~
 of	IN	I-Claim	10	For:~
 university	NN	I-Claim	10	For:~
-.	.	B-Premise	11	supports:12
+.	.	O	~	~
 # sent
-Students	NNS	I-Premise	11	supports:12
+Students	NNS	B-Premise	11	supports:12
 not	RB	I-Premise	11	supports:12
 only	RB	I-Premise	11	supports:12
 do	VB	I-Premise	11	supports:12

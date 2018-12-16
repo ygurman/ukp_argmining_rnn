@@ -241,8 +241,6 @@ facebook	NN	I-Premise	8	supports:7
 blog	NN	I-Premise	8	supports:7
 ,	,	I-Premise	8	supports:7
 etc.	FW	I-Premise	8	supports:7
-.	.	I-Premise	8	supports:7
-# sent
 instead	RB	I-Premise	8	supports:7
 .	.	O	~	~
 # sent
@@ -250,8 +248,8 @@ Due	JJ	O	~	~
 to	TO	O	~	~
 this	DT	O	~	~
 neglect	NN	O	~	~
-,	,	B-Premise	9	supports:8
-they	PRP	I-Premise	9	supports:8
+,	,	O	~	~
+they	PRP	B-Premise	9	supports:8
 will	MD	I-Premise	9	supports:8
 have	VB	I-Premise	9	supports:8
 a	DT	I-Premise	9	supports:8
@@ -260,7 +258,7 @@ result	NN	I-Premise	9	supports:8
 in	IN	I-Premise	9	supports:8
 school	NN	I-Premise	9	supports:8
 because	IN	O	~	~
-when	WRB	I-Premise	10	supports:9
+when	WRB	B-Premise	10	supports:9
 they	PRP	I-Premise	10	supports:9
 can	MD	I-Premise	10	supports:9
 not	RB	I-Premise	10	supports:9
@@ -283,7 +281,7 @@ In	IN	O	~	~
 conclusion	NN	O	~	~
 ,	,	O	~	~
 although	IN	O	~	~
-it	PRP	I-Claim	11	Against:~
+it	PRP	B-Claim	11	Against:~
 is	VBZ	I-Claim	11	Against:~
 undeniable	JJ	I-Claim	11	Against:~
 that	IN	I-Claim	11	Against:~
@@ -295,8 +293,8 @@ part	NN	I-Claim	11	Against:~
 of	IN	I-Claim	11	Against:~
 human	JJ	I-Claim	11	Against:~
 life	NN	I-Claim	11	Against:~
-,	,	B-MajorClaim	12	~
-it	PRP	I-MajorClaim	12	~
+,	,	O	~	~
+it	PRP	B-MajorClaim	12	~
 still	RB	I-MajorClaim	12	~
 has	VBZ	I-MajorClaim	12	~
 its	PRP$	I-MajorClaim	12	~

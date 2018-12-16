@@ -112,8 +112,8 @@ In	IN	O	~	~
 the	DT	O	~	~
 first	JJ	O	~	~
 instance	NN	O	~	~
-,	,	B-Premise	0	supports:3
-the	DT	I-Premise	0	supports:3
+,	,	O	~	~
+the	DT	B-Premise	0	supports:3
 progress	NN	I-Premise	0	supports:3
 of	IN	I-Premise	0	supports:3
 material	NN	I-Premise	0	supports:3
@@ -131,9 +131,9 @@ great	JJ	I-Premise	0	supports:3
 number	NN	I-Premise	0	supports:3
 of	IN	I-Premise	0	supports:3
 products	NNS	I-Premise	0	supports:3
-.	.	B-Premise	1	supports:0
+.	.	O	~	~
 # sent
-About	IN	I-Premise	1	supports:0
+About	IN	B-Premise	1	supports:0
 ten	CD	I-Premise	1	supports:0
 years	NNS	I-Premise	1	supports:0
 ago	RB	I-Premise	1	supports:0
@@ -162,9 +162,9 @@ money	NN	I-Premise	1	supports:0
 to	TO	I-Premise	1	supports:0
 buy	VB	I-Premise	1	supports:0
 one	CD	I-Premise	1	supports:0
-.	.	B-Premise	2	supports:0
+.	.	O	~	~
 # sent
-Today	NN	I-Premise	2	supports:0
+Today	NN	B-Premise	2	supports:0
 ,	,	I-Premise	2	supports:0
 mobile	JJ	I-Premise	2	supports:0
 phones	NNS	I-Premise	2	supports:0
@@ -189,8 +189,8 @@ technologies	NNS	I-Premise	2	supports:0
 .	.	O	~	~
 # sent
 Thus	RB	O	~	~
-,	,	B-Claim	3	For:~
-most	RBS	I-Claim	3	For:~
+,	,	O	~	~
+most	RBS	B-Claim	3	For:~
 members	NNS	I-Claim	3	For:~
 of	IN	I-Claim	3	For:~
 our	PRP$	I-Claim	3	For:~
@@ -212,8 +212,8 @@ people	NNS	I-Claim	3	For:~
 # paragraph 3
 # sent
 Secondly	RB	O	~	~
-,	,	B-Claim	4	For:~
-technical	JJ	I-Claim	4	For:~
+,	,	O	~	~
+technical	JJ	B-Claim	4	For:~
 developments	NNS	I-Claim	4	For:~
 improve	VBP	I-Claim	4	For:~
 productivity	NN	I-Claim	4	For:~
@@ -241,9 +241,9 @@ a	DT	I-Claim	4	For:~
 more	RBR	I-Claim	4	For:~
 meaningful	JJ	I-Claim	4	For:~
 life	NN	I-Claim	4	For:~
-.	.	B-Premise	5	supports:4
+.	.	O	~	~
 # sent
-With	IN	I-Premise	5	supports:4
+With	IN	B-Premise	5	supports:4
 the	DT	I-Premise	5	supports:4
 development	NN	I-Premise	5	supports:4
 of	IN	I-Premise	5	supports:4
@@ -270,8 +270,8 @@ In	IN	O	~	~
 the	DT	O	~	~
 past	JJ	O	~	~
 time	NN	O	~	~
-,	,	B-Premise	6	supports:4
-we	PRP	I-Premise	6	supports:4
+,	,	O	~	~
+we	PRP	B-Premise	6	supports:4
 had	VBD	I-Premise	6	supports:4
 to	TO	I-Premise	6	supports:4
 spend	VB	I-Premise	6	supports:4
@@ -297,8 +297,8 @@ us	PRP	I-Premise	6	supports:4
 .	.	O	~	~
 # sent
 Nowadays	RB	O	~	~
-,	,	B-Premise	7	supports:4
-we	PRP	I-Premise	7	supports:4
+,	,	O	~	~
+we	PRP	B-Premise	7	supports:4
 can	MD	I-Premise	7	supports:4
 talk	VB	I-Premise	7	supports:4
 with	IN	I-Premise	7	supports:4
@@ -320,8 +320,8 @@ us	PRP	I-Premise	7	supports:4
 # sent
 In	IN	O	~	~
 addition	NN	O	~	~
-,	,	B-Premise	8	supports:9
-the	DT	I-Premise	8	supports:9
+,	,	O	~	~
+the	DT	B-Premise	8	supports:9
 Internet	NNP	I-Premise	8	supports:9
 gives	VBZ	I-Premise	8	supports:9
 everyone	NN	I-Premise	8	supports:9
@@ -359,8 +359,8 @@ exception	NN	O	~	~
 To	TO	O	~	~
 some	DT	O	~	~
 extent	NN	O	~	~
-,	,	B-Claim	10	Against:~
-the	DT	I-Claim	10	Against:~
+,	,	O	~	~
+the	DT	B-Claim	10	Against:~
 gap	NN	I-Claim	10	Against:~
 between	IN	I-Claim	10	Against:~
 rich	JJ	I-Claim	10	Against:~
@@ -373,7 +373,7 @@ by	IN	I-Claim	10	Against:~
 technology	NN	I-Claim	10	Against:~
 ,	,	O	~	~
 because	IN	O	~	~
-only	RB	I-Premise	11	supports:10
+only	RB	B-Premise	11	supports:10
 the	DT	I-Premise	11	supports:10
 rich	JJ	I-Premise	11	supports:10
 people	NNS	I-Premise	11	supports:10
@@ -403,7 +403,7 @@ Nevertheless	RB	O	~	~
 ,	,	O	~	~
 I	PRP	O	~	~
 think	VBP	O	~	~
-it	PRP	I-Premise	12	attacks:10
+it	PRP	B-Premise	12	attacks:10
 is	VBZ	I-Premise	12	attacks:10
 a	DT	I-Premise	12	attacks:10
 limp	JJ	I-Premise	12	attacks:10
@@ -430,8 +430,8 @@ gap	NN	I-Premise	12	attacks:10
 # sent
 In	IN	O	~	~
 conclusion	NN	O	~	~
-,	,	B-MajorClaim	13	~
-the	DT	I-MajorClaim	13	~
+,	,	O	~	~
+the	DT	B-MajorClaim	13	~
 good	JJ	I-MajorClaim	13	~
 technology	NN	I-MajorClaim	13	~
 bringing	VBG	I-MajorClaim	13	~
@@ -439,9 +439,9 @@ to	TO	I-MajorClaim	13	~
 us	PRP	I-MajorClaim	13	~
 is	VBZ	I-MajorClaim	13	~
 undeniable	JJ	I-MajorClaim	13	~
-.	.	B-Claim	14	For:~
+.	.	O	~	~
 # sent
-Under	IN	I-Claim	14	For:~
+Under	IN	B-Claim	14	For:~
 proper	JJ	I-Claim	14	For:~
 use	NN	I-Claim	14	For:~
 of	IN	I-Claim	14	For:~

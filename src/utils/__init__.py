@@ -274,6 +274,7 @@ class HyperParams(object):
         self.pretraind_embd_layer_path = os.path.abspath(self.hp_dict['pretraind_embd_layer_path'])
         self.batch_size = int(self.hp_dict['batch_size'])
         self.use_pos = True if self.hp_dict['use_pos'] == "True" else False
+        self.rel_tagset_size = int(self.hp_dict['rel_tagset_size'])
         # training and optimization parameters
         self.clip_threshold = int(self.hp_dict['clip_threshold'])
         self.learning_rate = float(self.hp_dict['learning_rate'])
@@ -288,7 +289,6 @@ class HyperParams(object):
 
         # relation classifier parameters
         try:
-            self.rel_tagset_size = int(self.hp_dict['rel_tagset_size'])
             self.d_tag_embd = int(self.hp_dict['d_tag_embd'])
             self.d_small_embd = int(self.hp_dict['d_small_embd'])
             self.d_distance_embd = int(self.hp_dict['d_distance_embd'])
@@ -296,8 +296,14 @@ class HyperParams(object):
             self.d_h3 = int(self.hp_dict['d_h3'])
             self.pretrained_segmentor_path = os.path.abspath(self.hp_dict['pretrained_segmentor_path'])
 
-        except KeyError:
-            pass # happens only when using the first classifier in which case those parameters are not relevant)
+        except:
+            self.d_tag_embd = 1
+            self.d_small_embd = 1
+            self.d_distance_embd = 1
+            self.d_h2 = 1
+            self.d_h3 = 1
+            self.pretrained_segmentor_path =None
+
 
 class DivisionResolution(Enum):
     SENTENCE = 0
@@ -314,13 +320,15 @@ def prepare_relations_data(files, data_dir, vocab_dir,save:bool =False):
     assume that if "save" option wasnt true than dictionaries already caculated and stored in the processed data path
     """
     prepared_items = []
-    for essay in files:
+    for essay in tqdm(files):
         if save:
             ac_dict, rel_dict = get_all_relations_from_tsv(os.path.join(data_dir,"processed",essay+".tsv"),os.path.join(data_dir,"processed") if save else None)
+            pickle.dump(ac_dict, open(os.path.join(data_dir, "processed", essay + "_ac_dict.pcl"), 'wb'))
             # prepare all argument components
             for ac in ac_dict.values():
                 prepare_ac_for_model(ac, vocab_dir)
-                pickle.dump(ac_dict,os.path.join(data_dir,"processed",essay+"_relations_dict.pcl"))
+            pickle.dump(ac_dict,open(os.path.join(data_dir,"processed",essay+"_ac_dict_ready.pcl"),'wb'))
+            pickle.dump(rel_dict,open(os.path.join(data_dir,"processed",essay+"_relations_dict.pcl"),'wb'))
         else:
             ac_dict = pickle.load(open(os.path.join(data_dir,"processed",essay+"_ac_dict_ready.pcl"),'rb'))
             rel_dict = pickle.load(open(os.path.join(data_dir,"processed",essay+"_relations_dict.pcl"),'rb'))

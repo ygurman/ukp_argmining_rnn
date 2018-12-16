@@ -294,7 +294,7 @@ Personally	RB	O	~	~
 I	PRP	O	~	~
 think	VBP	O	~	~
 that	IN	O	~	~
-students	NNS	I-MajorClaim	12	~
+students	NNS	B-MajorClaim	12	~
 learn	VBP	I-MajorClaim	12	~
 far	RB	I-MajorClaim	12	~
 more	RBR	I-MajorClaim	12	~
@@ -311,7 +311,7 @@ Because	IN	O	~	~
 not	RB	O	~	~
 only	RB	O	~	~
 do	VBP	O	~	~
-teachers	NNS	I-Claim	13	For:~
+teachers	NNS	B-Claim	13	For:~
 teach	VB	I-Claim	13	For:~
 us	PRP	I-Claim	13	For:~
 knowledge	NN	I-Claim	13	For:~

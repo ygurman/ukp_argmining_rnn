@@ -86,7 +86,7 @@ there	EX	O	~	~
 no	DT	O	~	~
 doubt	NN	O	~	~
 that	IN	O	~	~
-a	DT	I-MajorClaim	0	~
+a	DT	B-MajorClaim	0	~
 government	NN	I-MajorClaim	0	~
 is	VBZ	I-MajorClaim	0	~
 supposed	VBN	I-MajorClaim	0	~
@@ -102,7 +102,7 @@ both	DT	I-MajorClaim	0	~
 # sent
 Concerning	VBG	O	~	~
 that	DT	O	~	~
-elementary	JJ	I-Premise	1	supports:4
+elementary	JJ	B-Premise	1	supports:4
 education	NN	I-Premise	1	supports:4
 ,	,	I-Premise	1	supports:4
 like	IN	I-Premise	1	supports:4
@@ -125,8 +125,8 @@ in	IN	I-Premise	1	supports:4
 today	NN	I-Premise	1	supports:4
 's	POS	I-Premise	1	supports:4
 society	NN	I-Premise	1	supports:4
-,	,	I-Premise	2	supports:4
-government	NN	I-Premise	2	supports:4
+,	,	O	~	~
+government	NN	B-Premise	2	supports:4
 should	MD	I-Premise	2	supports:4
 guarantee	VB	I-Premise	2	supports:4
 that	IN	I-Premise	2	supports:4
@@ -174,8 +174,8 @@ development	NN	I-Premise	3	supports:4
 In	IN	O	~	~
 other	JJ	O	~	~
 words	NNS	O	~	~
-,	,	I-Claim	4	For:~
-if	IN	I-Claim	4	For:~
+,	,	O	~	~
+if	IN	B-Claim	4	For:~
 countries	NNS	I-Claim	4	For:~
 ,	,	I-Claim	4	For:~
 especially	RB	I-Claim	4	For:~
@@ -216,12 +216,12 @@ That	DT	O	~	~
 's	VBZ	O	~	~
 not	RB	O	~	~
 enough	RB	O	~	~
-,	,	I-Premise	5	supports:10
-for	IN	I-Premise	5	supports:10
+,	,	O	~	~
+for	IN	B-Premise	5	supports:10
 higher	JJR	I-Premise	5	supports:10
 education	NN	I-Premise	5	supports:10
-,	,	I-Premise	5	supports:10
-which	WDT	I-Premise	5	supports:10
+,	,	O	~	~
+which	WDT	B-Premise	5	supports:10
 represent	VBP	I-Premise	5	supports:10
 the	DT	I-Premise	5	supports:10
 cutting	VBG	I-Premise	5	supports:10
@@ -242,9 +242,9 @@ economic	JJ	I-Premise	5	supports:10
 and	CC	I-Premise	5	supports:10
 social	JJ	I-Premise	5	supports:10
 advance	NN	I-Premise	5	supports:10
-.	.	I-Premise	6	supports:10
+.	.	O	~	~
 # sent
-The	DT	I-Premise	6	supports:10
+The	DT	B-Premise	6	supports:10
 high	JJ	I-Premise	6	supports:10
 technology	NN	I-Premise	6	supports:10
 and	CC	I-Premise	6	supports:10
@@ -270,9 +270,9 @@ in	IN	I-Premise	6	supports:10
 the	DT	I-Premise	6	supports:10
 international	JJ	I-Premise	6	supports:10
 community	NN	I-Premise	6	supports:10
-.	.	I-Premise	7	attacks:10
+.	.	O	~	~
 # sent
-Some	DT	I-Premise	7	attacks:10
+Some	DT	B-Premise	7	attacks:10
 may	MD	I-Premise	7	attacks:10
 argue	VB	I-Premise	7	attacks:10
 that	IN	I-Premise	7	attacks:10
@@ -287,13 +287,13 @@ or	CC	I-Premise	7	attacks:10
 invention	NN	I-Premise	7	attacks:10
 ,	,	O	~	~
 but	CC	O	~	~
-this	DT	I-Premise	8	attacks:7
+this	DT	B-Premise	8	attacks:7
 argument	NN	I-Premise	8	attacks:7
 is	VBZ	I-Premise	8	attacks:7
 invalid	JJ	I-Premise	8	attacks:7
-.	.	I-Premise	9	supports:10
+.	.	O	~	~
 # sent
-Researches	VBZ	I-Premise	9	supports:10
+Researches	VBZ	B-Premise	9	supports:10
 into	IN	I-Premise	9	supports:10
 humanities	NNS	I-Premise	9	supports:10
 and	CC	I-Premise	9	supports:10
@@ -308,8 +308,8 @@ money	NN	I-Premise	9	supports:10
 what	WP	O	~	~
 's	VBZ	O	~	~
 more	JJR	O	~	~
-,	,	I-Claim	10	For:~
-government	NN	I-Claim	10	For:~
+,	,	O	~	~
+government	NN	B-Claim	10	For:~
 's	POS	I-Claim	10	For:~
 big	JJ	I-Claim	10	For:~
 budget	NN	I-Claim	10	For:~
@@ -346,8 +346,8 @@ draw	VB	O	~	~
 the	DT	O	~	~
 conclusion	NN	O	~	~
 that	IN	O	~	~
-,	,	I-MajorClaim	11	~
-a	DT	I-MajorClaim	11	~
+,	,	O	~	~
+a	DT	B-MajorClaim	11	~
 government	NN	I-MajorClaim	11	~
 should	MD	I-MajorClaim	11	~
 spare	VB	I-MajorClaim	11	~
@@ -360,8 +360,8 @@ as	RB	I-MajorClaim	11	~
 well	RB	I-MajorClaim	11	~
 as	IN	I-MajorClaim	11	~
 universities	NNS	I-MajorClaim	11	~
-,	,	I-Claim	12	For:~
-both	DT	I-Claim	12	For:~
+,	,	O	~	~
+both	DT	B-Claim	12	For:~
 are	VBP	I-Claim	12	For:~
 crucial	JJ	I-Claim	12	For:~
 on	IN	I-Claim	12	For:~

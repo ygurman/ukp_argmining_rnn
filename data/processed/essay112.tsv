@@ -67,18 +67,18 @@ examinations	NNS	O	~	~
 should	MD	O	~	~
 be	VB	O	~	~
 reconsidered	VBN	O	~	~
-.	.	I-Claim	0	For:~
+.	.	O	~	~
 # paragraph 2
 # sent
-There	EX	I-Claim	0	For:~
+There	EX	B-Claim	0	For:~
 are	VBP	I-Claim	0	For:~
 clearly	RB	I-Claim	0	For:~
 advantages	NNS	I-Claim	0	For:~
 to	TO	I-Claim	0	For:~
 exams	NNS	I-Claim	0	For:~
-.	.	I-Premise	1	supports:0
+.	.	O	~	~
 # sent
-They	PRP	I-Premise	1	supports:0
+They	PRP	B-Premise	1	supports:0
 help	VBP	I-Premise	1	supports:0
 to	TO	I-Premise	1	supports:0
 ensure	VB	I-Premise	1	supports:0
@@ -92,9 +92,9 @@ on	IN	I-Premise	1	supports:0
 all	DT	I-Premise	1	supports:0
 exam	NN	I-Premise	1	supports:0
 candidates	NNS	I-Premise	1	supports:0
-.	.	I-Premise	2	supports:0
+.	.	O	~	~
 # sent
-They	PRP	I-Premise	2	supports:0
+They	PRP	B-Premise	2	supports:0
 are	VBP	I-Premise	2	supports:0
 also	RB	I-Premise	2	supports:0
 relatively	RB	I-Premise	2	supports:0
@@ -125,15 +125,15 @@ ability	NN	I-Premise	2	supports:0
 .	.	O	~	~
 # sent
 However	RB	O	~	~
-,	,	I-Claim	3	Against:~
-exams	NNS	I-Claim	3	Against:~
+,	,	O	~	~
+exams	NNS	B-Claim	3	Against:~
 also	RB	I-Claim	3	Against:~
 have	VBP	I-Claim	3	Against:~
 some	DT	I-Claim	3	Against:~
 drawbacks	NNS	I-Claim	3	Against:~
-.	.	I-Premise	4	supports:3
+.	.	O	~	~
 # sent
-Test-wise	JJ	I-Premise	4	supports:3
+Test-wise	JJ	B-Premise	4	supports:3
 candidates	NNS	I-Premise	4	supports:3
 can	MD	I-Premise	4	supports:3
 often	RB	I-Premise	4	supports:3
@@ -152,8 +152,8 @@ skills	NNS	I-Premise	4	supports:3
 # sent
 In	IN	O	~	~
 contrast	NN	O	~	~
-,	,	I-Premise	5	supports:6
-some	DT	I-Premise	5	supports:6
+,	,	O	~	~
+some	DT	B-Premise	5	supports:6
 test-takers	NNS	I-Premise	5	supports:6
 perform	VBP	I-Premise	5	supports:6
 can	MD	I-Premise	5	supports:6
@@ -170,8 +170,8 @@ anxiety	NN	I-Premise	5	supports:6
 In	IN	O	~	~
 this	DT	O	~	~
 case	NN	O	~	~
-,	,	I-Premise	6	supports:3
-teachers	NNS	I-Premise	6	supports:3
+,	,	O	~	~
+teachers	NNS	B-Premise	6	supports:3
 and	CC	I-Premise	6	supports:3
 learners	NNS	I-Premise	6	supports:3
 focus	VBP	I-Premise	6	supports:3
@@ -196,10 +196,10 @@ educational	JJ	I-Premise	6	supports:3
 experience	NN	I-Premise	6	supports:3
 for	IN	I-Premise	6	supports:3
 all	DT	I-Premise	6	supports:3
-.	.	I-Claim	7	Against:~
+.	.	O	~	~
 # paragraph 3
 # sent
-A	DT	I-Claim	7	Against:~
+A	DT	B-Claim	7	Against:~
 number	NN	I-Claim	7	Against:~
 of	IN	I-Claim	7	Against:~
 measures	NNS	I-Claim	7	Against:~
@@ -214,8 +214,8 @@ concerns	NNS	I-Claim	7	Against:~
 # sent
 Wherever	NNP	O	~	~
 possible	JJ	O	~	~
-,	,	I-Premise	8	supports:7
-exams	NNS	I-Premise	8	supports:7
+,	,	O	~	~
+exams	NNS	B-Premise	8	supports:7
 should	MD	I-Premise	8	supports:7
 match	VB	I-Premise	8	supports:7
 the	DT	I-Premise	8	supports:7
@@ -226,9 +226,9 @@ of	IN	I-Premise	8	supports:7
 the	DT	I-Premise	8	supports:7
 learning	NN	I-Premise	8	supports:7
 environment	NN	I-Premise	8	supports:7
-.	.	I-Premise	9	supports:7
+.	.	O	~	~
 # sent
-Exam	NN	I-Premise	9	supports:7
+Exam	NN	B-Premise	9	supports:7
 task	NN	I-Premise	9	supports:7
 should	MD	I-Premise	9	supports:7
 be	VB	I-Premise	9	supports:7
@@ -244,9 +244,9 @@ different	JJ	I-Premise	9	supports:7
 types	NNS	I-Premise	9	supports:7
 of	IN	I-Premise	9	supports:7
 skills	NNS	I-Premise	9	supports:7
-.	.	I-Premise	10	supports:7
+.	.	O	~	~
 # sent
-Other	JJ	I-Premise	10	supports:7
+Other	JJ	B-Premise	10	supports:7
 types	NNS	I-Premise	10	supports:7
 of	IN	I-Premise	10	supports:7
 assessment	NN	I-Premise	10	supports:7
@@ -287,7 +287,7 @@ it	PRP	O	~	~
 is	VBZ	O	~	~
 convincing	VBG	O	~	~
 that	IN	O	~	~
-exams	NNS	I-MajorClaim	11	~
+exams	NNS	B-MajorClaim	11	~
 have	VBP	I-MajorClaim	11	~
 a	DT	I-MajorClaim	11	~
 role	NN	I-MajorClaim	11	~
@@ -304,8 +304,8 @@ achievement	NN	I-MajorClaim	11	~
 .	.	O	~	~
 # sent
 However	RB	O	~	~
-,	,	I-Claim	12	Against:~
-exams	NNS	I-Claim	12	Against:~
+,	,	O	~	~
+exams	NNS	B-Claim	12	Against:~
 need	VBP	I-Claim	12	Against:~
 to	TO	I-Claim	12	Against:~
 be	VB	I-Claim	12	Against:~

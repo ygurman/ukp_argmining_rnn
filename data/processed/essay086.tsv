@@ -190,9 +190,9 @@ ever	RB	I-Premise	7	supports:5
 see	VB	I-Premise	7	supports:5
 creational	JJ	I-Premise	7	supports:5
 facilities	NNS	I-Premise	7	supports:5
-.	.	B-Premise	8	supports:5
+.	.	O	~	~
 # sent
-Children	NNS	I-Premise	8	supports:5
+Children	NNS	B-Premise	8	supports:5
 who	WP	I-Premise	8	supports:5
 live	VBP	I-Premise	8	supports:5
 in	IN	I-Premise	8	supports:5
@@ -211,8 +211,8 @@ farms	NNS	I-Premise	8	supports:5
 # paragraph 4
 # sent
 Finally	RB	O	~	~
-,	,	B-Premise	9	supports:10
-in	IN	I-Premise	9	supports:10
+,	,	O	~	~
+in	IN	B-Premise	9	supports:10
 big	JJ	I-Premise	9	supports:10
 cities	NNS	I-Premise	9	supports:10
 children	NNS	I-Premise	9	supports:10
@@ -222,7 +222,7 @@ media	NNS	I-Premise	9	supports:10
 easily	RB	I-Premise	9	supports:10
 ,	,	O	~	~
 so	IN	O	~	~
-they	PRP	I-Claim	10	For:~
+they	PRP	B-Claim	10	For:~
 can	MD	I-Claim	10	For:~
 learn	VB	I-Claim	10	For:~
 a	DT	I-Claim	10	For:~
@@ -237,9 +237,9 @@ surfing	NN	I-Claim	10	For:~
 through	IN	I-Claim	10	For:~
 the	DT	I-Claim	10	For:~
 net	NN	I-Claim	10	For:~
-.	.	B-Premise	11	supports:12
+.	.	O	~	~
 # sent
-Via	NNP	I-Premise	11	supports:12
+Via	NNP	B-Premise	11	supports:12
 internet	NN	I-Premise	11	supports:12
 they	PRP	I-Premise	11	supports:12
 can	MD	I-Premise	11	supports:12
@@ -255,7 +255,7 @@ the	DT	I-Premise	11	supports:12
 world	NN	I-Premise	11	supports:12
 ,	,	O	~	~
 therefor	RB	O	~	~
-they	PRP	I-Claim	12	For:~
+they	PRP	B-Claim	12	For:~
 can	MD	I-Claim	12	For:~
 exchange	VB	I-Claim	12	For:~
 their	PRP$	I-Claim	12	For:~
@@ -274,7 +274,7 @@ sum	VB	O	~	~
 up	RP	O	~	~
 ,	,	O	~	~
 although	IN	O	~	~
-countrysides	NNS	I-Claim	13	Against:~
+countrysides	NNS	B-Claim	13	Against:~
 have	VBP	I-Claim	13	Against:~
 some	DT	I-Claim	13	Against:~
 advantages	NNS	I-Claim	13	Against:~
@@ -287,9 +287,9 @@ peace	NN	I-Claim	13	Against:~
 ,	,	I-Claim	13	Against:~
 and	CC	I-Claim	13	Against:~
 etc.	NN	I-Claim	13	Against:~
-.	.	I-MajorClaim	14	~
+.	.	O	~	~
 # sent
-Today	NN	I-MajorClaim	14	~
+Today	NN	B-MajorClaim	14	~
 's	POS	I-MajorClaim	14	~
 children	NNS	I-MajorClaim	14	~
 needs	VBZ	I-MajorClaim	14	~

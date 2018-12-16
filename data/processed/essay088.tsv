@@ -75,7 +75,7 @@ I	PRP	O	~	~
 always	RB	O	~	~
 believe	VBP	O	~	~
 that	IN	O	~	~
-a	DT	I-MajorClaim	0	~
+a	DT	B-MajorClaim	0	~
 defeated	VBN	I-MajorClaim	0	~
 person	NN	I-MajorClaim	0	~
 has	VBZ	I-MajorClaim	0	~
@@ -96,8 +96,8 @@ goal	NN	I-MajorClaim	0	~
 First	NNP	O	~	~
 of	IN	O	~	~
 all	DT	O	~	~
-,	,	I-Claim	1	For:~
-when	WRB	I-Claim	1	For:~
+,	,	O	~	~
+when	WRB	B-Claim	1	For:~
 people	NNS	I-Claim	1	For:~
 face	VBP	I-Claim	1	For:~
 with	IN	I-Claim	1	For:~
@@ -133,8 +133,8 @@ mistakes	NNS	I-Claim	1	For:~
 # sent
 For	IN	O	~	~
 instance	NN	O	~	~
-,	,	I-Premise	2	supports:1
-most	JJS	I-Premise	2	supports:1
+,	,	O	~	~
+most	JJS	B-Premise	2	supports:1
 of	IN	I-Premise	2	supports:1
 inventors	NNS	I-Premise	2	supports:1
 in	IN	I-Premise	2	supports:1
@@ -169,8 +169,8 @@ problems	NNS	I-Premise	2	supports:1
 Second	NNP	O	~	~
 of	IN	O	~	~
 all	DT	O	~	~
-,	,	I-Claim	3	For:~
-experience	NN	I-Claim	3	For:~
+,	,	O	~	~
+experience	NN	B-Claim	3	For:~
 shows	NNS	I-Claim	3	For:~
 while	IN	I-Claim	3	For:~
 people	NNS	I-Claim	3	For:~
@@ -203,8 +203,8 @@ percentile	NN	I-Claim	3	For:~
 # sent
 For	IN	O	~	~
 example	NN	O	~	~
-,	,	I-Premise	4	supports:3
-scientists	NNS	I-Premise	4	supports:3
+,	,	O	~	~
+scientists	NNS	B-Premise	4	supports:3
 experiment	NN	I-Premise	4	supports:3
 a	DT	I-Premise	4	supports:3
 substance	NN	I-Premise	4	supports:3
@@ -241,7 +241,7 @@ I	PRP	O	~	~
 would	MD	O	~	~
 maintain	VB	O	~	~
 that	IN	O	~	~
-people	NNS	I-MajorClaim	5	~
+people	NNS	B-MajorClaim	5	~
 should	MD	I-MajorClaim	5	~
 not	RB	I-MajorClaim	5	~
 give	VB	I-MajorClaim	5	~
@@ -256,8 +256,8 @@ failure	NN	I-MajorClaim	5	~
 # sent
 In	IN	O	~	~
 opposite	JJ	O	~	~
-,	,	I-Claim	6	For:~
-they	PRP	I-Claim	6	For:~
+,	,	O	~	~
+they	PRP	B-Claim	6	For:~
 have	VBP	I-Claim	6	For:~
 to	TO	I-Claim	6	For:~
 learn	VB	I-Claim	6	For:~

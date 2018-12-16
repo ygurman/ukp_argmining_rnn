@@ -83,16 +83,16 @@ sano	NN	O	~	~
 which	WDT	O	~	~
 means	VBZ	O	~	~
 that	IN	O	~	~
-healthy	JJ	I-Premise	2	supports:6
+healthy	JJ	B-Premise	2	supports:6
 body	NN	I-Premise	2	supports:6
 is	VBZ	I-Premise	2	supports:6
 basis	NN	I-Premise	2	supports:6
 for	IN	I-Premise	2	supports:6
 healthy	JJ	I-Premise	2	supports:6
 soul	NN	I-Premise	2	supports:6
-.	.	I-Premise	3	supports:6
+.	.	O	~	~
 # sent
-There	EX	I-Premise	3	supports:6
+There	EX	B-Premise	3	supports:6
 is	VBZ	I-Premise	3	supports:6
 a	DT	I-Premise	3	supports:6
 direct	JJ	I-Premise	3	supports:6
@@ -108,9 +108,9 @@ of	IN	I-Premise	3	supports:6
 doing	VBG	I-Premise	3	supports:6
 physical	JJ	I-Premise	3	supports:6
 exercises	NNS	I-Premise	3	supports:6
-.	.	I-Premise	4	supports:6
+.	.	O	~	~
 # sent
-The	DT	I-Premise	4	supports:6
+The	DT	B-Premise	4	supports:6
 more	JJR	I-Premise	4	supports:6
 we	PRP	I-Premise	4	supports:6
 practice	VBP	I-Premise	4	supports:6
@@ -122,8 +122,8 @@ feel	VBP	I-Premise	4	supports:6
 .	.	O	~	~
 # sent
 Additionally	RB	O	~	~
-,	,	I-Premise	5	supports:6
-there	EX	I-Premise	5	supports:6
+,	,	O	~	~
+there	EX	B-Premise	5	supports:6
 is	VBZ	I-Premise	5	supports:6
 a	DT	I-Premise	5	supports:6
 fact	NN	I-Premise	5	supports:6
@@ -152,8 +152,8 @@ better	JJR	I-Premise	5	supports:6
 .	.	O	~	~
 # sent
 So	RB	O	~	~
-,	,	I-Claim	6	For:~
-if	IN	I-Claim	6	For:~
+,	,	O	~	~
+if	IN	B-Claim	6	For:~
 the	DT	I-Claim	6	For:~
 entire	JJ	I-Claim	6	For:~
 nation	NN	I-Claim	6	For:~
@@ -184,8 +184,8 @@ nation	NN	I-Claim	6	For:~
 # paragraph 3
 # sent
 Besides	IN	O	~	~
-,	,	I-Claim	7	For:~
-when	WRB	I-Claim	7	For:~
+,	,	O	~	~
+when	WRB	B-Claim	7	For:~
 we	PRP	I-Claim	7	For:~
 practice	VBP	I-Claim	7	For:~
 outdoors	RB	I-Claim	7	For:~
@@ -202,8 +202,8 @@ clearer	JJR	I-Claim	7	For:~
 # sent
 For	IN	O	~	~
 example	NN	O	~	~
-,	,	I-Premise	8	supports:7
-when	WRB	I-Premise	8	supports:7
+,	,	O	~	~
+when	WRB	B-Premise	8	supports:7
 a	DT	I-Premise	8	supports:7
 person	NN	I-Premise	8	supports:7
 goes	VBZ	I-Premise	8	supports:7
@@ -223,8 +223,8 @@ observation	NN	I-Premise	8	supports:7
 .	.	O	~	~
 # sent
 Alike	RB	O	~	~
-,	,	I-Premise	9	supports:7
-the	DT	I-Premise	9	supports:7
+,	,	O	~	~
+the	DT	B-Premise	9	supports:7
 school	NN	I-Premise	9	supports:7
 basketball	NN	I-Premise	9	supports:7
 team	NN	I-Premise	9	supports:7
@@ -253,8 +253,8 @@ theoretically	RB	I-Premise	9	supports:7
 .	.	O	~	~
 # sent
 Furthermore	RB	O	~	~
-,	,	I-Premise	10	supports:7
-almost	RB	I-Premise	10	supports:7
+,	,	O	~	~
+almost	RB	B-Premise	10	supports:7
 all	DT	I-Premise	10	supports:7
 natural	JJ	I-Premise	10	supports:7
 science	NN	I-Premise	10	supports:7
@@ -280,8 +280,8 @@ Last	JJ	O	~	~
 but	CC	O	~	~
 not	RB	O	~	~
 least	JJS	O	~	~
-,	,	I-Claim	11	For:~
-financial	JJ	I-Claim	11	For:~
+,	,	O	~	~
+financial	JJ	B-Claim	11	For:~
 sustainability	NN	I-Claim	11	For:~
 of	IN	I-Claim	11	For:~
 a	DT	I-Claim	11	For:~
@@ -298,8 +298,8 @@ is	VBZ	O	~	~
 # sent
 For	IN	O	~	~
 instance	NN	O	~	~
-,	,	I-Premise	12	supports:11
-the	DT	I-Premise	12	supports:11
+,	,	O	~	~
+the	DT	B-Premise	12	supports:11
 money	NN	I-Premise	12	supports:11
 invested	VBD	I-Premise	12	supports:11
 into	IN	I-Premise	12	supports:11
@@ -313,7 +313,7 @@ into	IN	I-Premise	12	supports:11
 healthcare	NN	I-Premise	12	supports:11
 ,	,	O	~	~
 since	IN	O	~	~
-the	DT	I-Premise	13	supports:12
+the	DT	B-Premise	13	supports:12
 nation	NN	I-Premise	13	supports:12
 is	VBZ	I-Premise	13	supports:12
 comparatively	RB	I-Premise	13	supports:12
@@ -323,8 +323,8 @@ healthy	JJ	I-Premise	13	supports:12
 Along	IN	O	~	~
 with	IN	O	~	~
 that	DT	O	~	~
-,	,	I-Premise	14	supports:16
-physically	RB	I-Premise	14	supports:16
+,	,	O	~	~
+physically	RB	B-Premise	14	supports:16
 healthy	JJ	I-Premise	14	supports:16
 people	NNS	I-Premise	14	supports:16
 can	MD	I-Premise	14	supports:16
@@ -343,8 +343,8 @@ a	DT	O	~	~
 matter	NN	O	~	~
 of	IN	O	~	~
 fact	NN	O	~	~
-,	,	I-Premise	15	supports:16
-the	DT	I-Premise	15	supports:16
+,	,	O	~	~
+the	DT	B-Premise	15	supports:16
 better	JJR	I-Premise	15	supports:16
 a	DT	I-Premise	15	supports:16
 person	NN	I-Premise	15	supports:16
@@ -358,8 +358,8 @@ works	VBZ	I-Premise	15	supports:16
 .	.	O	~	~
 # sent
 Therefore	RB	O	~	~
-,	,	I-Claim	16	For:~
-putting	VBG	I-Claim	16	For:~
+,	,	O	~	~
+putting	VBG	B-Claim	16	For:~
 physical	JJ	I-Claim	16	For:~
 activities	NNS	I-Claim	16	For:~
 in	IN	I-Claim	16	For:~
@@ -379,7 +379,7 @@ society	NN	I-Claim	16	For:~
 # sent
 As	IN	O	~	~
 hence	RB	O	~	~
-it	PRP	I-Premise	17	supports:16
+it	PRP	B-Premise	17	supports:16
 ends	VBZ	I-Premise	17	supports:16
 up	RP	I-Premise	17	supports:16
 with	IN	I-Premise	17	supports:16
@@ -399,7 +399,7 @@ like	VB	O	~	~
 to	TO	O	~	~
 say	VB	O	~	~
 that	IN	O	~	~
-the	DT	I-MajorClaim	18	~
+the	DT	B-MajorClaim	18	~
 more	JJR	I-MajorClaim	18	~
 attention	NN	I-MajorClaim	18	~
 is	VBZ	I-MajorClaim	18	~

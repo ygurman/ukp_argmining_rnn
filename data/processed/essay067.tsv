@@ -300,7 +300,7 @@ I	PRP	O	~	~
 absolutely	RB	O	~	~
 agree	VBP	O	~	~
 that	IN	O	~	~
-restrictions	NNS	I-Claim	7	For:~
+restrictions	NNS	B-Claim	7	For:~
 on	IN	I-Claim	7	For:~
 exposure	NN	I-Claim	7	For:~
 to	TO	I-Claim	7	For:~
@@ -308,7 +308,7 @@ adolescents	NNS	I-Claim	7	For:~
 should	MD	I-Claim	7	For:~
 apply	VB	I-Claim	7	For:~
 as	IN	O	~	~
-adolescents	NNS	I-Premise	8	supports:7
+adolescents	NNS	B-Premise	8	supports:7
 are	VBP	I-Premise	8	supports:7
 not	RB	I-Premise	8	supports:7
 mature	JJ	I-Premise	8	supports:7
@@ -392,8 +392,8 @@ work	VBP	O	~	~
 on	IN	O	~	~
 the	DT	O	~	~
 contrary	NN	O	~	~
-,	,	I-MajorClaim	10	~
-they	PRP	I-MajorClaim	10	~
+,	,	O	~	~
+they	PRP	B-MajorClaim	10	~
 should	MD	I-MajorClaim	10	~
 be	VB	I-MajorClaim	10	~
 encouraged	VBN	I-MajorClaim	10	~
@@ -402,8 +402,8 @@ express	VB	I-MajorClaim	10	~
 their	PRP$	I-MajorClaim	10	~
 innovative	JJ	I-MajorClaim	10	~
 ideas	NNS	I-MajorClaim	10	~
---	:	I-Claim	11	For:~
-this	DT	I-Claim	11	For:~
+--	:	O	~	~
+this	DT	B-Claim	11	For:~
 world	NN	I-Claim	11	For:~
 needs	VBZ	I-Claim	11	For:~
 them	PRP	I-Claim	11	For:~

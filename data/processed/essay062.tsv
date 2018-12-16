@@ -271,9 +271,9 @@ engineering	NN	I-Claim	11	Against:~
 ,	,	I-Claim	11	Against:~
 defense	NN	I-Claim	11	Against:~
 etc.	NN	I-Claim	11	Against:~
-.	.	B-Premise	12	attacks:11
+.	.	O	~	~
 # sent
-This	DT	I-Premise	12	attacks:11
+This	DT	B-Premise	12	attacks:11
 kind	NN	I-Premise	12	attacks:11
 of	IN	I-Premise	12	attacks:11
 gender	NN	I-Premise	12	attacks:11
@@ -292,8 +292,8 @@ society	NN	I-Premise	12	attacks:11
 Time	NNP	O	~	~
 and	CC	O	~	~
 again	RB	O	~	~
-,	,	B-Premise	13	supports:12
-women	NNS	I-Premise	13	supports:12
+,	,	O	~	~
+women	NNS	B-Premise	13	supports:12
 have	VBP	I-Premise	13	supports:12
 proved	VBN	I-Premise	13	supports:12
 their	PRP$	I-Premise	13	supports:12
@@ -301,9 +301,9 @@ mettle	NN	I-Premise	13	supports:12
 in	IN	I-Premise	13	supports:12
 every	DT	I-Premise	13	supports:12
 field	NN	I-Premise	13	supports:12
-.	.	B-Premise	14	supports:12
+.	.	O	~	~
 # sent
-Women	NNS	I-Premise	14	supports:12
+Women	NNS	B-Premise	14	supports:12
 like	IN	I-Premise	14	supports:12
 Margaret	NNP	I-Premise	14	supports:12
 Thatcher	NNP	I-Premise	14	supports:12
@@ -332,7 +332,7 @@ I	PRP	O	~	~
 firmly	RB	O	~	~
 believe	VBP	O	~	~
 that	IN	O	~	~
-both	CC	I-MajorClaim	15	~
+both	CC	B-MajorClaim	15	~
 genders	NNS	I-MajorClaim	15	~
 have	VBP	I-MajorClaim	15	~
 equal	JJ	I-MajorClaim	15	~
@@ -345,9 +345,9 @@ them	PRP	I-MajorClaim	15	~
 in	IN	I-MajorClaim	15	~
 equal	JJ	I-MajorClaim	15	~
 numbers	NNS	I-MajorClaim	15	~
-.	.	B-Claim	16	For:~
+.	.	O	~	~
 # sent
-Equality	NN	I-Claim	16	For:~
+Equality	NN	B-Claim	16	For:~
 in	IN	I-Claim	16	For:~
 education	NN	I-Claim	16	For:~
 will	MD	I-Claim	16	For:~
@@ -357,9 +357,9 @@ development	NN	I-Claim	16	For:~
 of	IN	I-Claim	16	For:~
 the	DT	I-Claim	16	For:~
 society	NN	I-Claim	16	For:~
-.	.	B-Premise	17	supports:16
+.	.	O	~	~
 # sent
-Both	DT	I-Premise	17	supports:16
+Both	DT	B-Premise	17	supports:16
 genders	NNS	I-Premise	17	supports:16
 are	VBP	I-Premise	17	supports:16
 the	DT	I-Premise	17	supports:16

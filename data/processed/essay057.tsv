@@ -77,8 +77,6 @@ Rushdie	NNP	I-Premise	2	supports:4
 ,	,	I-Premise	2	supports:4
 Shakespeare	NNP	I-Premise	2	supports:4
 etc.	FW	I-Premise	2	supports:4
-.	.	I-Premise	2	supports:4
-# sent
 have	VB	I-Premise	2	supports:4
 made	VBN	I-Premise	2	supports:4
 artistic	JJ	I-Premise	2	supports:4
@@ -88,9 +86,9 @@ gave	VBD	I-Premise	2	supports:4
 a	DT	I-Premise	2	supports:4
 social	JJ	I-Premise	2	supports:4
 message	NN	I-Premise	2	supports:4
-.	.	B-Premise	3	supports:4
+.	.	O	~	~
 # sent
-Right	RB	I-Premise	3	supports:4
+Right	RB	B-Premise	3	supports:4
 from	IN	I-Premise	3	supports:4
 sculptures	NNS	I-Premise	3	supports:4
 to	TO	I-Premise	3	supports:4
@@ -115,9 +113,9 @@ issues	NNS	I-Premise	3	supports:4
 of	IN	I-Premise	3	supports:4
 different	JJ	I-Premise	3	supports:4
 eras	NNS	I-Premise	3	supports:4
-.	.	B-Claim	4	For:~
+.	.	O	~	~
 # sent
-Creative	JJ	I-Claim	4	For:~
+Creative	JJ	B-Claim	4	For:~
 works	NNS	I-Claim	4	For:~
 help	VBP	I-Claim	4	For:~
 to	TO	I-Claim	4	For:~
@@ -133,8 +131,8 @@ message	NN	I-Claim	4	For:~
 # paragraph 3
 # sent
 Nonetheless	RB	O	~	~
-,	,	B-Claim	5	For:~
-innovative	JJ	I-Claim	5	For:~
+,	,	O	~	~
+innovative	JJ	B-Claim	5	For:~
 works	NNS	I-Claim	5	For:~
 makes	VBZ	I-Claim	5	For:~
 people	NNS	I-Claim	5	For:~
@@ -150,9 +148,9 @@ into	IN	I-Claim	5	For:~
 their	PRP$	I-Claim	5	For:~
 own	JJ	I-Claim	5	For:~
 conscience	NN	I-Claim	5	For:~
-.	.	B-Premise	6	supports:5
+.	.	O	~	~
 # sent
-It	PRP	I-Premise	6	supports:5
+It	PRP	B-Premise	6	supports:5
 helps	VBZ	I-Premise	6	supports:5
 to	TO	I-Premise	6	supports:5
 raise	VB	I-Premise	6	supports:5
@@ -169,8 +167,8 @@ governments	NNS	I-Premise	6	supports:5
 # sent
 For	IN	O	~	~
 instance	NN	O	~	~
-,	,	B-Premise	7	supports:6
-Bangladeshi	JJ	I-Premise	7	supports:6
+,	,	O	~	~
+Bangladeshi	JJ	B-Premise	7	supports:6
 writer	NN	I-Premise	7	supports:6
 Taslima	NNP	I-Premise	7	supports:6
 Nasrin	NNP	I-Premise	7	supports:6
@@ -189,9 +187,9 @@ raised	VBD	I-Premise	7	supports:6
 a	DT	I-Premise	7	supports:6
 social	JJ	I-Premise	7	supports:6
 issue	NN	I-Premise	7	supports:6
-.	.	B-Premise	8	supports:6
+.	.	O	~	~
 # sent
-This	DT	I-Premise	8	supports:6
+This	DT	B-Premise	8	supports:6
 type	NN	I-Premise	8	supports:6
 of	IN	I-Premise	8	supports:6
 approach	NN	I-Premise	8	supports:6
@@ -206,8 +204,8 @@ minds	NNS	I-Premise	8	supports:6
 # sent
 In	IN	O	~	~
 addition	NN	O	~	~
-,	,	B-Premise	9	supports:5
-creativity	NN	I-Premise	9	supports:5
+,	,	O	~	~
+creativity	NN	B-Premise	9	supports:5
 also	RB	I-Premise	9	supports:5
 gives	VBZ	I-Premise	9	supports:5
 aesthetic	JJ	I-Premise	9	supports:5
@@ -222,9 +220,9 @@ governments	NNS	O	~	~
 restrict	VBP	O	~	~
 the	DT	O	~	~
 artists	NNS	O	~	~
-.	.	B-Premise	10	supports:12
+.	.	O	~	~
 # sent
-Frank	NNP	I-Premise	10	supports:12
+Frank	NNP	B-Premise	10	supports:12
 Zappa	NNP	I-Premise	10	supports:12
 once	RB	I-Premise	10	supports:12
 said	VBD	I-Premise	10	supports:12
@@ -244,10 +242,10 @@ if	IN	I-Premise	10	supports:12
 its	PRP$	I-Premise	10	supports:12
 not	RB	I-Premise	10	supports:12
 open	VB	I-Premise	10	supports:12
-``	``	B-Premise	11	supports:12
-.	.	I-Premise	11	supports:12
+``	``	I-Premise	10	supports:12
+.	.	O	~	~
 # sent
-Restrictions	NNS	I-Premise	11	supports:12
+Restrictions	NNS	B-Premise	11	supports:12
 would	MD	I-Premise	11	supports:12
 just	RB	I-Premise	11	supports:12
 curb	VB	I-Premise	11	supports:12
@@ -262,9 +260,9 @@ would	MD	I-Premise	11	supports:12
 limit	VB	I-Premise	11	supports:12
 their	PRP$	I-Premise	11	supports:12
 brains	NNS	I-Premise	11	supports:12
-.	.	I-Claim	12	For:~
+.	.	O	~	~
 # sent
-Like	IN	I-Claim	12	For:~
+Like	IN	B-Claim	12	For:~
 the	DT	I-Claim	12	For:~
 media	NNS	I-Claim	12	For:~
 ,	,	I-Claim	12	For:~
@@ -284,8 +282,8 @@ freely	RB	I-Claim	12	For:~
 # paragraph 5
 # sent
 However	RB	O	~	~
-,	,	I-Premise	13	supports:15
-artists	NNS	I-Premise	13	supports:15
+,	,	O	~	~
+artists	NNS	B-Premise	13	supports:15
 should	MD	I-Premise	13	supports:15
 also	RB	I-Premise	13	supports:15
 know	VB	I-Premise	13	supports:15
@@ -297,9 +295,9 @@ sentiments	NNS	I-Premise	13	supports:15
 of	IN	I-Premise	13	supports:15
 the	DT	I-Premise	13	supports:15
 people	NNS	I-Premise	13	supports:15
-.	.	I-Premise	14	supports:15
+.	.	O	~	~
 # sent
-Many	JJ	I-Premise	14	supports:15
+Many	JJ	B-Premise	14	supports:15
 artists	NNS	I-Premise	14	supports:15
 have	VBP	I-Premise	14	supports:15
 been	VBN	I-Premise	14	supports:15
@@ -318,9 +316,9 @@ of	IN	I-Premise	14	supports:15
 the	DT	I-Premise	14	supports:15
 common	JJ	I-Premise	14	supports:15
 people	NNS	I-Premise	14	supports:15
-.	.	I-Claim	15	For:~
+.	.	O	~	~
 # sent
-Artists	NNS	I-Claim	15	For:~
+Artists	NNS	B-Claim	15	For:~
 should	MD	I-Claim	15	For:~
 have	VB	I-Claim	15	For:~
 self-awareness	NN	I-Claim	15	For:~
@@ -345,7 +343,7 @@ I	PRP	O	~	~
 firmly	RB	O	~	~
 believe	VBP	O	~	~
 that	IN	O	~	~
-artists	NNS	I-MajorClaim	16	~
+artists	NNS	B-MajorClaim	16	~
 should	MD	I-MajorClaim	16	~
 be	VB	I-MajorClaim	16	~
 given	VBN	I-MajorClaim	16	~
@@ -353,9 +351,9 @@ the	DT	I-MajorClaim	16	~
 freedom	NN	I-MajorClaim	16	~
 of	IN	I-MajorClaim	16	~
 expression	NN	I-MajorClaim	16	~
-.	.	I-Claim	17	For:~
+.	.	O	~	~
 # sent
-Mind	NN	I-Claim	17	For:~
+Mind	NN	B-Claim	17	For:~
 can	MD	I-Claim	17	For:~
 not	RB	I-Claim	17	For:~
 work	VB	I-Claim	17	For:~
@@ -365,9 +363,9 @@ is	VBZ	I-Claim	17	For:~
 chained	JJ	I-Claim	17	For:~
 in	IN	I-Claim	17	For:~
 boundaries	NNS	I-Claim	17	For:~
-.	.	I-Claim	18	For:~
+.	.	O	~	~
 # sent
-Imagination	NN	I-Claim	18	For:~
+Imagination	NN	B-Claim	18	For:~
 is	VBZ	I-Claim	18	For:~
 at	IN	I-Claim	18	For:~
 its	PRP$	I-Claim	18	For:~

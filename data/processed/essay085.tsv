@@ -97,8 +97,8 @@ so	RB	O	~	~
 I	PRP	O	~	~
 strongly	RB	O	~	~
 believe	VBP	O	~	~
-that	IN	I-MajorClaim	0	~
-CCTV	NNP	I-MajorClaim	0	~
+that	IN	O	~	~
+CCTV	NNP	B-MajorClaim	0	~
 cameras	NNS	I-MajorClaim	0	~
 should	MD	I-MajorClaim	0	~
 be	VB	I-MajorClaim	0	~
@@ -124,9 +124,9 @@ workplace	NN	I-MajorClaim	0	~
 .	.	O	~	~
 # paragraph 2
 # sent
-Firstly	RB	B-Premise	1	supports:5
-,	,	I-Premise	1	supports:5
-by	IN	I-Premise	1	supports:5
+Firstly	RB	O	~	~
+,	,	O	~	~
+by	IN	B-Premise	1	supports:5
 having	VBG	I-Premise	1	supports:5
 CCTV	NNP	I-Premise	1	supports:5
 cameras	NNS	I-Premise	1	supports:5
@@ -140,13 +140,13 @@ robbery	NN	I-Premise	1	supports:5
 can	MD	I-Premise	1	supports:5
 be	VB	I-Premise	1	supports:5
 trimmed	VBN	I-Premise	1	supports:5
-down	RP	O	~	~
+down	RP	I-Premise	1	supports:5
 .	.	O	~	~
 # sent
 This	DT	O	~	~
 is	VBZ	O	~	~
-because	IN	I-Premise	2	supports:5
-when	WRB	I-Premise	2	supports:5
+because	IN	O	~	~
+when	WRB	B-Premise	2	supports:5
 a	DT	I-Premise	2	supports:5
 shop	NN	I-Premise	2	supports:5
 is	VBZ	I-Premise	2	supports:5
@@ -171,16 +171,16 @@ help	VB	I-Premise	2	supports:5
 the	DT	I-Premise	2	supports:5
 thieves	NNS	I-Premise	2	supports:5
 to	TO	I-Premise	2	supports:5
-be	VB	O	~	~
-traced	VBN	O	~	~
+be	VB	I-Premise	2	supports:5
+traced	VBN	I-Premise	2	supports:5
 .	.	O	~	~
 # sent
 To	TO	O	~	~
 illustrate	VB	O	~	~
 this	DT	O	~	~
-further	RBR	B-Premise	3	supports:5
-,	,	I-Premise	3	supports:5
-in	IN	I-Premise	3	supports:5
+further	RBR	O	~	~
+,	,	O	~	~
+in	IN	B-Premise	3	supports:5
 Malaysia	NNP	I-Premise	3	supports:5
 ,	,	I-Premise	3	supports:5
 policemen	NNP	I-Premise	3	supports:5
@@ -210,14 +210,14 @@ Eleven	CD	I-Premise	3	supports:5
 shop	NN	I-Premise	3	supports:5
 during	IN	I-Premise	3	supports:5
 the	DT	I-Premise	3	supports:5
-midnight	NN	O	~	~
+midnight	NN	I-Premise	3	supports:5
 .	.	O	~	~
 # sent
 Not	RB	O	~	~
 only	RB	O	~	~
-that	IN	I-Premise	4	supports:5
-,	,	I-Premise	4	supports:5
-as	IN	I-Premise	4	supports:5
+that	IN	O	~	~
+,	,	O	~	~
+as	IN	B-Premise	4	supports:5
 the	DT	I-Premise	4	supports:5
 employees	NNS	I-Premise	4	supports:5
 know	VBP	I-Premise	4	supports:5
@@ -234,8 +234,8 @@ less	RBR	I-Premise	4	supports:5
 likely	JJ	I-Premise	4	supports:5
 steal	VBP	I-Premise	4	supports:5
 from	IN	I-Premise	4	supports:5
-the	DT	O	~	~
-shops	NNS	O	~	~
+the	DT	I-Premise	4	supports:5
+shops	NNS	I-Premise	4	supports:5
 .	.	O	~	~
 # sent
 Thus	RB	O	~	~
@@ -243,8 +243,8 @@ Thus	RB	O	~	~
 it	PRP	O	~	~
 is	VBZ	O	~	~
 clear	JJ	O	~	~
-that	IN	I-Claim	5	For:~
-CCTVs	NNS	I-Claim	5	For:~
+that	IN	O	~	~
+CCTVs	NNS	B-Claim	5	For:~
 must	MD	I-Claim	5	For:~
 be	VB	I-Claim	5	For:~
 put	VBN	I-Claim	5	For:~
@@ -262,8 +262,8 @@ minimized	VBN	I-Claim	5	For:~
 # paragraph 3
 # sent
 Furthermore	RB	O	~	~
-,	,	I-Premise	6	supports:11
-at	IN	I-Premise	6	supports:11
+,	,	O	~	~
+at	IN	B-Premise	6	supports:11
 some	DT	I-Premise	6	supports:11
 offices	NNS	I-Premise	6	supports:11
 ,	,	I-Premise	6	supports:11
@@ -279,10 +279,10 @@ frustrated	JJ	I-Premise	6	supports:11
 customers	NNS	I-Premise	6	supports:11
 .	.	O	~	~
 # sent
-At	IN	B-Premise	7	supports:8
-times	NNS	I-Premise	7	supports:8
-,	,	I-Premise	7	supports:8
-face-to-face	JJ	I-Premise	7	supports:8
+At	IN	O	~	~
+times	NNS	O	~	~
+,	,	O	~	~
+face-to-face	JJ	B-Premise	7	supports:8
 interactions	NNS	I-Premise	7	supports:8
 with	IN	I-Premise	7	supports:8
 an	DT	I-Premise	7	supports:8
@@ -294,12 +294,12 @@ the	DT	I-Premise	7	supports:8
 employee	NN	I-Premise	7	supports:8
 in	IN	I-Premise	7	supports:8
 physical	JJ	I-Premise	7	supports:8
-danger	NN	O	~	~
-.	.	I-Premise	8	supports:11
+danger	NN	I-Premise	7	supports:8
+.	.	O	~	~
 # sent
-Hence	RB	I-Premise	8	supports:11
-,	,	I-Premise	8	supports:11
-the	DT	I-Premise	8	supports:11
+Hence	RB	O	~	~
+,	,	O	~	~
+the	DT	B-Premise	8	supports:11
 installation	NN	I-Premise	8	supports:11
 of	IN	I-Premise	8	supports:11
 CCTV	NNP	I-Premise	8	supports:11
@@ -311,8 +311,8 @@ employees	NNS	I-Premise	8	supports:11
 escape	VBP	I-Premise	8	supports:11
 this	DT	I-Premise	8	supports:11
 situation	NN	I-Premise	8	supports:11
-because	IN	I-Premise	9	supports:8
-the	DT	I-Premise	9	supports:8
+because	IN	O	~	~
+the	DT	B-Premise	9	supports:8
 customers	NNS	I-Premise	9	supports:8
 know	VBP	I-Premise	9	supports:8
 very	RB	I-Premise	9	supports:8
@@ -321,7 +321,7 @@ that	IN	I-Premise	9	supports:8
 their	PRP$	I-Premise	9	supports:8
 conversations	NNS	I-Premise	9	supports:8
 are	VBP	I-Premise	9	supports:8
-recorded	VBN	O	~	~
+recorded	VBN	I-Premise	9	supports:8
 .	.	O	~	~
 # sent
 In	IN	O	~	~
@@ -330,8 +330,8 @@ event	NN	O	~	~
 of	IN	O	~	~
 an	DT	O	~	~
 argument	NN	O	~	~
-,	,	I-Premise	10	supports:11
-the	DT	I-Premise	10	supports:11
+,	,	O	~	~
+the	DT	B-Premise	10	supports:11
 videotapes	NNS	I-Premise	10	supports:11
 can	MD	I-Premise	10	supports:11
 used	VBN	I-Premise	10	supports:11
@@ -347,7 +347,7 @@ actions	NNS	I-Premise	10	supports:11
 can	MD	I-Premise	10	supports:11
 be	VB	I-Premise	10	supports:11
 then	RB	I-Premise	10	supports:11
-taken	VBN	O	~	~
+taken	VBN	I-Premise	10	supports:11
 .	.	O	~	~
 # sent
 In	IN	B-Claim	11	For:~
@@ -385,9 +385,9 @@ cameras	NNS	O	~	~
 does	VBZ	O	~	~
 cause	VB	O	~	~
 controversy	NN	O	~	~
-.	.	I-Claim	12	Against:~
+.	.	O	~	~
 # sent
-Those	DT	I-Claim	12	Against:~
+Those	DT	B-Claim	12	Against:~
 opposing	VBG	I-Claim	12	Against:~
 the	DT	I-Claim	12	Against:~
 CCTV	NNP	I-Claim	12	Against:~
@@ -407,9 +407,9 @@ the	DT	I-Claim	12	Against:~
 cameras	NNS	O	~	~
 .	.	O	~	~
 # sent
-However	RB	B-Premise	13	supports:12
-,	,	I-Premise	13	supports:12
-one	CD	I-Premise	13	supports:12
+However	RB	O	~	~
+,	,	O	~	~
+one	CD	B-Premise	13	supports:12
 must	MD	I-Premise	13	supports:12
 realize	VB	I-Premise	13	supports:12
 that	IN	I-Premise	13	supports:12
@@ -431,11 +431,11 @@ suffering	VBG	I-Premise	13	supports:12
 from	IN	I-Premise	13	supports:12
 the	DT	I-Premise	13	supports:12
 consequences	NNS	I-Premise	13	supports:12
-.	.	I-Premise	14	supports:12
+.	.	O	~	~
 # sent
-Ergo	NNP	I-Premise	14	supports:12
-,	,	I-Premise	14	supports:12
-opponents	NNS	I-Premise	14	supports:12
+Ergo	NNP	O	~	~
+,	,	O	~	~
+opponents	NNS	B-Premise	14	supports:12
 of	IN	I-Premise	14	supports:12
 this	DT	I-Premise	14	supports:12
 system	NN	I-Premise	14	supports:12
@@ -454,15 +454,15 @@ themselves	PRP	I-Premise	14	supports:12
 from	IN	I-Premise	14	supports:12
 being	VBG	I-Premise	14	supports:12
 victims	NNS	I-Premise	14	supports:12
-of	IN	O	~	~
-crime	NN	O	~	~
+of	IN	I-Premise	14	supports:12
+crime	NN	I-Premise	14	supports:12
 .	.	O	~	~
 # paragraph 5
 # sent
 To	TO	O	~	~
 conclude	VB	O	~	~
-,	,	I-MajorClaim	15	~
-CCTV	NNP	I-MajorClaim	15	~
+,	,	O	~	~
+CCTV	NNP	B-MajorClaim	15	~
 cameras	NNS	I-MajorClaim	15	~
 are	VBP	I-MajorClaim	15	~
 essential	JJ	I-MajorClaim	15	~
@@ -473,10 +473,10 @@ be	VB	I-MajorClaim	15	~
 installed	VBN	I-MajorClaim	15	~
 in	IN	I-MajorClaim	15	~
 every	DT	I-MajorClaim	15	~
-premise	NN	B-Claim	16	For:~
-.	.	I-Claim	16	For:~
+premise	NN	I-MajorClaim	15	~
+.	.	O	~	~
 # sent
-This	DT	I-Claim	16	For:~
+This	DT	B-Claim	16	For:~
 is	VBZ	I-Claim	16	For:~
 chiefly	RB	I-Claim	16	For:~
 to	TO	I-Claim	16	For:~
@@ -489,12 +489,12 @@ by	IN	I-Claim	16	For:~
 any	DT	I-Claim	16	For:~
 intruders	NNS	I-Claim	16	For:~
 or	CC	I-Claim	16	For:~
-robbers	NNS	O	~	~
+robbers	NNS	I-Claim	16	For:~
 .	.	O	~	~
 # sent
 Admittedly	RB	O	~	~
-,	,	I-Premise	17	attacks:16
-privacies	NNS	I-Premise	17	attacks:16
+,	,	O	~	~
+privacies	NNS	B-Premise	17	attacks:16
 are	VBP	I-Premise	17	attacks:16
 lost	VBN	I-Premise	17	attacks:16
 with	IN	I-Premise	17	attacks:16
@@ -502,19 +502,19 @@ the	DT	I-Premise	17	attacks:16
 use	NN	I-Premise	17	attacks:16
 of	IN	I-Premise	17	attacks:16
 these	DT	I-Premise	17	attacks:16
-cameras	NNS	O	~	~
+cameras	NNS	I-Premise	17	attacks:16
 .	.	O	~	~
 # sent
 Nonetheless	RB	O	~	~
-,	,	I-Premise	18	attacks:17
-safety	NN	I-Premise	18	attacks:17
+,	,	O	~	~
+safety	NN	B-Premise	18	attacks:17
 should	MD	I-Premise	18	attacks:17
 be	VB	I-Premise	18	attacks:17
 put	VBN	I-Premise	18	attacks:17
 first	RB	I-Premise	18	attacks:17
 in	IN	I-Premise	18	attacks:17
 order	NN	I-Premise	18	attacks:17
-to	TO	O	~	~
-be	VB	O	~	~
-safe	JJ	O	~	~
+to	TO	I-Premise	18	attacks:17
+be	VB	I-Premise	18	attacks:17
+safe	JJ	I-Premise	18	attacks:17
 .	.	O	~	~

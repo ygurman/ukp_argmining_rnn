@@ -6,6 +6,7 @@ from argparse import ArgumentParser
 import torch
 import torch.nn as nn
 import torch.optim as optim
+from tqdm import tqdm
 
 from src.models import BiLSTMRelationClassifier, BlandRelationClassifier
 from src.utils import HyperParams, prepare_relations_data
@@ -18,7 +19,7 @@ def main(config_file_path):
     torch.manual_seed(h_params.rand_seed)
 
     training_files, _ = get_train_test_split(os.path.abspath(os.path.join("..", "data", "train-test-split.csv")))
-    training_data = prepare_relations_data(training_files, h_params.data_dir, h_params.vocab_dir) # list of (ac_dict, [(ac_id,ac_id),type]) tupels for each essay
+    training_data = prepare_relations_data(training_files, h_params.data_dir, h_params.vocab_dir,save=False) # list of (ac_dict, [(ac_id,ac_id),type]) tupels for each essay
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -69,59 +70,63 @@ def main(config_file_path):
     model.train()
     save_name = "{}{}".format(model.__class__.__name__,"_transfer" if h_params.pretrained_segmentor_path else "")
 
+    log = open("/home/yochay/ukp_argmining_rnn/logs/"+save_name+".log",'wt')
     for epoch in range(h_params.n_epochs):
         start_time = time.time()
         acc_loss = 0.0  # accumalating loss per epoch for display
-        done = 1
-        ess_total_time = 0
-        for (ac_dict, ac_pairs, rel_tags) in training_data:
-            ess_start_time = time.time()
+        for (ac_dict, ac_pairs, rel_tags) in tqdm(training_data):
             for i_rel in range(len(ac_pairs)):
                 a_id, b_id = ac_pairs[i_rel][0],ac_pairs[i_rel][1]
-                ac_a, ac_b = ac_dict[a_id], ac_dict[b_id]
-                # reset accumalated gradients and lstm's hidden state between iterations
-                model.zero_grad()
-                model.hidden1 = model.init_hidden(model.h1dimension)
-                model.hidden2 = model.init_hidden(model.h2dimension)
+                try:
+                    ac_a, ac_b = ac_dict[a_id], ac_dict[b_id]
 
-                # make a forward pass
-                tag_scores = model((ac_a,ac_b))
+                    # reset accumalated gradients and lstm's hidden state between iterations
+                    model.zero_grad()
+                    model.hidden1 = model.init_hidden(model.h1dimension)
+                    model.hidden2 = model.init_hidden(model.h2dimension)
 
-                # backprop
-                loss = loss_function(tag_scores, rel_tags[i_rel].view(1).to(device))
-                acc_loss += loss.item()
-                loss.backward()
+                    # make a forward pass
+                    tag_scores = model((ac_a,ac_b))
 
-                # gradient clipping
-                torch.nn.utils.clip_grad_norm_(model.parameters(), h_params.clip_threshold)
+                    # backprop
+                    loss = loss_function(tag_scores, rel_tags[i_rel].view(1).to(device))
+                    acc_loss += loss.item()
+                    loss.backward()
 
-                # call optimizer step
-                optimizer.step()
-            ess_total_time += time.time() - ess_start_time
-            sys.stdout.write("epoch:{}\tfinished {}/322 essays in {:.2f}[s] per essay\n".format(epoch,done, ess_total_time/done))
-            done += 1
+                    # gradient clipping
+                    torch.nn.utils.clip_grad_norm_(model.parameters(), h_params.clip_threshold)
+
+                    # call optimizer step
+                    optimizer.step()
+
+                except KeyError:
+                    try:
+                        log.write("essay {}\tids({},{}) -bad preprocess\n".format(ac_dict[0].essay,a_id,b_id))
+                    except:
+                        pass
         end_time = time.time()
         # output stats
         sys.stdout.write("===> Epoch[{}/{}]: Loss: {:.4f} , time = {:d}[s]\n".format(epoch + 1, h_params.n_epochs,
                                                                                      acc_loss,
                                                                                      int(end_time - start_time)))
 
-        if (epoch+1)%25 ==0:
+        if (epoch+1)%25 ==0 or epoch in [2,4,9]:
             try:
                 torch.save({
-                    'epoch': epoch,
+                    'epoch': epoch+1,
                     'model_state_dict': model.state_dict(),
                     'optimizer_state_dict': optimizer.state_dict(),
-                    'loss': loss}, os.path.abspath(os.path.join(h_params.models_dir,"{}_ep-{}.pt".format(save_name,epoch))))
+                    'loss': loss}, os.path.abspath(os.path.join(h_params.models_dir,"{}_ep-{}.pt".format(save_name,epoch+1))))
             except:
-                sys.stdout.write('failed to save model in epoch {}\n'.format(epoch))
+                sys.stdout.write('failed to save model in epoch {}\n'.format(epoch+1))
+    log.close()
 
     # save model
     torch.save({
-        'epoch': epoch,
+        'epoch': epoch+1,
         'model_state_dict': model.state_dict(),
-        'optimizer_state_dict': optimizer.state_dict(),
-        'loss': loss}, os.path.abspath(os.path.join(h_params.models_dir,"{}_ep-{}.pt".format(save_name,epoch))))
+        'optimizer_state_dict': optimizer.state_dict(),+-
+        'loss': loss}, os.path.abspath(os.path.join(h_params.models_dir,"{}_ep-{}.pt".format(save_name,epoch+1))))
 
     # announce end
     sys.stdout.write("finished training")

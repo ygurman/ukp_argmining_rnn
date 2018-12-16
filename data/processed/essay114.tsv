@@ -262,9 +262,9 @@ towards	IN	I-Premise	8	supports:6
 a	DT	I-Premise	8	supports:6
 proper	JJ	I-Premise	8	supports:6
 education	NN	I-Premise	8	supports:6
-.	.	B-Premise	9	supports:6
+.	.	O	~	~
 # sent
-Without	IN	I-Premise	9	supports:6
+Without	IN	B-Premise	9	supports:6
 someone	NN	I-Premise	9	supports:6
 who	WP	I-Premise	9	supports:6
 can	MD	I-Premise	9	supports:6
@@ -293,7 +293,7 @@ scientific	JJ	O	~	~
 view	NN	O	~	~
 ,	,	O	~	~
 because	IN	O	~	~
-only	RB	I-Premise	10	supports:6
+only	RB	B-Premise	10	supports:6
 a	DT	I-Premise	10	supports:6
 teacher	NN	I-Premise	10	supports:6
 can	MD	I-Premise	10	supports:6
@@ -328,7 +328,7 @@ teacher	NN	I-MajorClaim	11	~
 I	PRP	O	~	~
 think	VBP	O	~	~
 that	IN	O	~	~
-computers	NNS	I-MajorClaim	12	~
+computers	NNS	B-MajorClaim	12	~
 will	MD	I-MajorClaim	12	~
 continue	VB	I-MajorClaim	12	~
 to	TO	I-MajorClaim	12	~
@@ -348,9 +348,9 @@ never	RB	I-MajorClaim	12	~
 take	VB	I-MajorClaim	12	~
 their	PRP$	I-MajorClaim	12	~
 place	NN	I-MajorClaim	12	~
-.	.	B-Claim	13	For:~
+.	.	O	~	~
 # sent
-Teachers	NNS	I-Claim	13	For:~
+Teachers	NNS	B-Claim	13	For:~
 are	VBP	I-Claim	13	For:~
 not	RB	I-Claim	13	For:~
 just	RB	I-Claim	13	For:~

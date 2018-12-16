@@ -15,6 +15,7 @@ import sys
 from typing import Dict
 
 import numpy as np
+import pydot
 import torch
 import torch.nn as nn
 from nltk.parse import CoreNLPParser
@@ -26,39 +27,6 @@ EMPTY_SIGN = "~"
 ###
 # generic .ann files related methods
 ###
-
-class ArgDoc(object):
-    def __init__(self, base_path):
-        self.ess_id = int(base_path[-3:])  # essay id according to UKP naming convention
-        self._txt_path = base_path + ".txt"  # essay text file path
-        self._ann_path = base_path + ".ann"  # UKP annotated file path
-        # read document's text
-        with open(file=self._txt_path, mode='rt', encoding='utf8') as f:
-            self.text = f.read()
-
-        # get essay's paragraph's indices (seperated with '\n')
-        self.paragraph_offsets = getNewLineIndices(self.text)
-
-        # read annotated data from file
-        propositions, prop_labels, prop_stances, supports, attacks = readAnnotatedFile(self._ann_path)
-
-        # update proposition offsets, labels, stances and link types
-        inner_indices, self.prop_offsets = zip(
-            *sorted(propositions.items(), key=lambda x: x[1]))  # use the beginning index of propositions for sort
-
-        # paragraph alignmnt of propositions (ordered by proposition's offsets)
-        self.prop_paragraphs = [np.searchsorted(self.paragraph_offsets, start) - 1 for start, _ in self.prop_offsets]
-
-        # invert indices for key management
-        new_indices = {k: v for v, k in enumerate(inner_indices)}
-        n_props = len(self.prop_offsets)
-
-        # update fields with new inverted indices
-        self.prop_labels = [prop_labels[inner_indices[i]] for i in range(n_props)]
-        self.prop_stances = {new_indices[k]: v for k, v in prop_stances.items()}
-        self.supports = [(new_indices[src], new_indices[trg]) for src, trg in supports]
-        self.attacks = [(new_indices[src], new_indices[trg]) for src, trg in attacks]
-        self.links = self.supports + self.attacks
 
 def readAnnotatedFile(ann_path: str) -> (dict, dict, dict, list, list):
     """
@@ -92,6 +60,126 @@ def readAnnotatedFile(ann_path: str) -> (dict, dict, dict, list, list):
                 link_list.append((source, target))
 
     return propositions, prop_labels, prop_stances, supports, attacks
+
+
+class ArgDoc(object):
+    """
+    class that represents an argumentative essay (using UKP 2.0 annotations)
+    """
+    def __init__(self, base_path):
+        self.ess_id = int(base_path[-3:])  # essay id according to UKP naming convention
+        self._txt_path = base_path + ".txt"  # essay text file path
+        self._ann_path = base_path + ".ann"  # UKP annotated file path
+        # read document's text
+        with open(file=self._txt_path, mode='rt', encoding='utf8') as f:
+            self.text = f.read()
+
+        # get essay's paragraph's indices (seperated with '\n')
+        self.paragraph_offsets = self._getNewLineIndices(self.text)
+
+        # read annotated data from file
+        propositions, prop_labels, prop_stances, supports, attacks = readAnnotatedFile(self._ann_path)
+
+        # update proposition offsets, labels, stances and link types
+        inner_indices, self.prop_offsets = zip(
+            *sorted(propositions.items(), key=lambda x: x[1]))  # use the beginning index of propositions for sort
+
+        # paragraph alignmnt of propositions (ordered by proposition's offsets)
+        self.prop_paragraphs = [np.searchsorted(self.paragraph_offsets, start) - 1 for start, _ in self.prop_offsets]
+
+        # invert indices for key management
+        new_indices = {k: v for v, k in enumerate(inner_indices)}
+        n_props = len(self.prop_offsets)
+
+        # update fields with new inverted indices
+        self.prop_labels = [prop_labels[inner_indices[i]] for i in range(n_props)]
+        self.prop_stances = {new_indices[k]: v for k, v in prop_stances.items()}
+        self.supports = [(new_indices[src], new_indices[trg]) for src, trg in supports]
+        self.attacks = [(new_indices[src], new_indices[trg]) for src, trg in attacks]
+        self.links = self.supports + self.attacks
+
+    def _getNewLineIndices(self, text: str) -> np.array:
+        """
+        utility function that returns essay text's paragraphs offsets
+        """
+        i = 0  # assume first char always opens paragraph
+        paragraph_indices = []
+        while i != -1:
+            paragraph_indices.append(i)
+            i = text.find('\n', i + 1)
+        return np.array(paragraph_indices)
+
+    def visualize(self, save_path=os.getcwd()):
+        """
+        plot the essay as graph using pydot and save as .png file
+        """
+        arg_graph = pydot.Dot(graph_type='digraph')
+
+        maj_claims = [("! " + self.text[self.prop_offsets[i][0]:self.prop_offsets[i][1]]) for i in
+                      range(len(self.prop_labels)) if
+                      self.prop_labels[i] == 'MajorClaim']  # handle more than 1 major cliam for main node
+        # add the major claims node
+        head_node = pydot.Node('\n'.join(maj_claims), style='filled',
+                               fillcolor='#eeccdd')
+        arg_graph.add_node(head_node)
+
+        nodes = {}
+        # add the premise and claims nodes
+        for i in range(len(self.prop_labels)):
+            if self.prop_labels[i] == 'MajorClaim':
+                continue
+            text = self.text[self.prop_offsets[i][0]:self.prop_offsets[i][1]]
+            start = 0
+            label = []
+            next_i = -1
+            for i_c in range(1, len(text)):
+                if i_c < next_i:
+                    continue
+                if i_c % 30 == 0:
+                    next_i = text.find(" ", i_c) + 1
+                    if next_i > 0:
+                        label.append(text[start:next_i - 1])
+                        start = next_i
+                    else:
+                        label.append(text[start:])
+                        start = len(text)
+            if (i_c > start):
+                rest = " " + text[start:]
+                if len(rest.split()) == 1:
+                    label[-1] += rest
+                else:
+                    label.append(text[start:])
+
+            nodes[i] = pydot.Node(i,
+                                  label='\n'.join(label),
+                                  style='filled',
+                                  fillcolor='#ccbbdd' if self.prop_labels[i] == 'Claim' else '#aabbdd'
+                                  )
+            arg_graph.add_node(nodes[i])
+        # add edges
+        # add the stances (cliams-majorClaims) edges
+        for i, val in self.prop_stances.items():
+            tmp_edge = pydot.Edge(nodes[i], head_node,
+                                  label=val,
+                                  labelfontcolor='red' if val == "Against" else 'green',
+                                  color='red' if val == "Against" else 'green'
+                                  )
+            arg_graph.add_edge(tmp_edge)
+
+        # add the support/attacks edges
+        for src, trg in self.supports:
+            tmp_edge = pydot.Edge(nodes[src], nodes[trg])
+            arg_graph.add_edge(tmp_edge)
+        for src, trg in self.attacks:
+            tmp_edge = pydot.Edge(nodes[src], nodes[trg],
+                                  style='dotted',
+                                  color='red'
+                                  )
+            arg_graph.add_edge(tmp_edge)
+        # display and save
+        path = os.path.join(save_path, "essay{:3d}.png".format(self.ess_id).replace(" ","0"))
+        arg_graph.write_png(path)
+        print("saved png to {}".format(path))
 
 ###
 # visualize all argumentative essays and save to fixed location
@@ -145,7 +233,7 @@ def pre_process_ukp_essay(base_path, pos_tagger = CoreNLPParser(url='http://loca
     no_space_prop_offsets = calc_no_spaces_indices(arg_doc)
 
     base_dir, base_filename = os.path.split(base_path)
-    output_file = os.path.join(base_dir, "processed", base_filename + ".tsv")
+    output_file = os.path.join(base_dir, "processed", base_filename + "(1).tsv")
     with open(output_file, 'wt', encoding='utf8') as f_out:
         for i_paragraph in range(len(paragraphs)):
             f_out.write("# paragraph {}\n".format(i_paragraph))

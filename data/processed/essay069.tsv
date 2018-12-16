@@ -190,8 +190,8 @@ In	IN	O	~	~
 the	DT	O	~	~
 second	JJ	O	~	~
 place	NN	O	~	~
-,	,	I-Claim	5	For:~
-the	DT	I-Claim	5	For:~
+,	,	O	~	~
+the	DT	B-Claim	5	For:~
 revolution	NN	I-Claim	5	For:~
 in	IN	I-Claim	5	For:~
 females	NNS	I-Claim	5	For:~
@@ -210,9 +210,9 @@ but	CC	I-Claim	5	For:~
 society	NN	I-Claim	5	For:~
 as	RB	I-Claim	5	For:~
 well	RB	I-Claim	5	For:~
-.	.	I-Premise	6	supports:5
+.	.	O	~	~
 # sent
-The	DT	I-Premise	6	supports:5
+The	DT	B-Premise	6	supports:5
 financial	JJ	I-Premise	6	supports:5
 burden	NN	I-Premise	6	supports:5
 of	IN	I-Premise	6	supports:5
@@ -240,8 +240,8 @@ money	NN	I-Premise	6	supports:5
 What	WP	O	~	~
 is	VBZ	O	~	~
 more	JJR	O	~	~
-,	,	I-Premise	7	supports:5
-women	NNS	I-Premise	7	supports:5
+,	,	O	~	~
+women	NNS	B-Premise	7	supports:5
 have	VBP	I-Premise	7	supports:5
 the	DT	I-Premise	7	supports:5
 outstanding	JJ	I-Premise	7	supports:5
@@ -267,8 +267,8 @@ elaboration	NN	I-Premise	7	supports:5
 # paragraph 4
 # sent
 Admittedly	RB	O	~	~
-,	,	I-Claim	8	Against:~
-such	JJ	I-Claim	8	Against:~
+,	,	O	~	~
+such	JJ	B-Claim	8	Against:~
 changes	NNS	I-Claim	8	Against:~
 do	VBP	I-Claim	8	Against:~
 lead	VB	I-Claim	8	Against:~
@@ -288,8 +288,8 @@ or	CC	O	~	~
 under	IN	O	~	~
 many	JJ	O	~	~
 circumstances	NNS	O	~	~
-,	,	I-Premise	9	supports:8
-women	NNS	I-Premise	9	supports:8
+,	,	O	~	~
+women	NNS	B-Premise	9	supports:8
 find	VBP	I-Premise	9	supports:8
 it	PRP	I-Premise	9	supports:8
 difficult	JJ	I-Premise	9	supports:8
@@ -307,8 +307,8 @@ wives	NNS	I-Premise	9	supports:8
 .	.	O	~	~
 # sent
 Also	RB	O	~	~
-,	,	I-Premise	10	supports:8
-children	NNS	I-Premise	10	supports:8
+,	,	O	~	~
+children	NNS	B-Premise	10	supports:8
 might	MD	I-Premise	10	supports:8
 enjoy	VB	I-Premise	10	supports:8
 less	JJR	I-Premise	10	supports:8
@@ -349,8 +349,8 @@ challenges	NNS	O	~	~
 All	DT	O	~	~
 things	NNS	O	~	~
 considered	VBN	O	~	~
-,	,	I-MajorClaim	11	~
-in	IN	I-MajorClaim	11	~
+,	,	O	~	~
+in	IN	B-MajorClaim	11	~
 a	DT	I-MajorClaim	11	~
 society	NN	I-MajorClaim	11	~
 where	WRB	I-MajorClaim	11	~

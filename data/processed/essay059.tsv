@@ -77,9 +77,9 @@ the	DT	I-Premise	1	supports:4
 rare	JJ	I-Premise	1	supports:4
 ''	''	I-Premise	1	supports:4
 cases	NNS	I-Premise	1	supports:4
-.	.	I-Premise	2	supports:4
+.	.	O	~	~
 # sent
-Its	PRP$	I-Premise	2	supports:4
+Its	PRP$	B-Premise	2	supports:4
 first	JJ	I-Premise	2	supports:4
 and	CC	I-Premise	2	supports:4
 foremost	JJ	I-Premise	2	supports:4
@@ -90,9 +90,9 @@ of	IN	I-Premise	2	supports:4
 other	JJ	I-Premise	2	supports:4
 human	JJ	I-Premise	2	supports:4
 beings	NNS	I-Premise	2	supports:4
-.	.	I-Premise	3	supports:4
+.	.	O	~	~
 # sent
-When	WRB	I-Premise	3	supports:4
+When	WRB	B-Premise	3	supports:4
 a	DT	I-Premise	3	supports:4
 criminal	JJ	I-Premise	3	supports:4
 becomes	VBZ	I-Premise	3	supports:4
@@ -119,8 +119,8 @@ punishment	NN	I-Premise	3	supports:4
 .	.	O	~	~
 # sent
 Thus	RB	O	~	~
-,	,	I-Claim	4	For:~
-capital	JJ	I-Claim	4	For:~
+,	,	O	~	~
+capital	JJ	B-Claim	4	For:~
 punishment	NN	I-Claim	4	For:~
 protects	VBZ	I-Claim	4	For:~
 the	DT	I-Claim	4	For:~
@@ -132,8 +132,8 @@ criminals	NNS	I-Claim	4	For:~
 # paragraph 3
 # sent
 Moreover	RB	O	~	~
-,	,	I-Premise	5	supports:7
-capital	JJ	I-Premise	5	supports:7
+,	,	O	~	~
+capital	JJ	B-Premise	5	supports:7
 punishment	NN	I-Premise	5	supports:7
 curbs	NNS	I-Premise	5	supports:7
 the	DT	I-Premise	5	supports:7
@@ -144,9 +144,9 @@ of	IN	I-Premise	5	supports:7
 other	JJ	I-Premise	5	supports:7
 hateful	JJ	I-Premise	5	supports:7
 crimes	NNS	I-Premise	5	supports:7
-.	.	I-Premise	6	supports:7
+.	.	O	~	~
 # sent
-When	WRB	I-Premise	6	supports:7
+When	WRB	B-Premise	6	supports:7
 a	DT	I-Premise	6	supports:7
 criminal	JJ	I-Premise	6	supports:7
 mind	NN	I-Premise	6	supports:7
@@ -167,8 +167,8 @@ crimes	NNS	I-Premise	6	supports:7
 .	.	O	~	~
 # sent
 Thus	RB	O	~	~
-,	,	I-Claim	7	For:~
-the	DT	I-Claim	7	For:~
+,	,	O	~	~
+the	DT	B-Claim	7	For:~
 rate	NN	I-Claim	7	For:~
 of	IN	I-Claim	7	For:~
 crime	NN	I-Claim	7	For:~
@@ -181,8 +181,8 @@ decreased	VBN	I-Claim	7	For:~
 # paragraph 4
 # sent
 Importantly	RB	O	~	~
-,	,	I-Premise	8	supports:9
-capital	JJ	I-Premise	8	supports:9
+,	,	O	~	~
+capital	JJ	B-Premise	8	supports:9
 punishment	NN	I-Premise	8	supports:9
 saves	VBZ	I-Premise	8	supports:9
 a	DT	I-Premise	8	supports:9
@@ -199,9 +199,9 @@ of	IN	I-Premise	8	supports:9
 these	DT	I-Premise	8	supports:9
 hardcore	NN	I-Premise	8	supports:9
 criminals	NNS	I-Premise	8	supports:9
-.	.	I-Claim	9	For:~
+.	.	O	~	~
 # sent
-Criminals	NNS	I-Claim	9	For:~
+Criminals	NNS	B-Claim	9	For:~
 who	WP	I-Claim	9	For:~
 do	VBP	I-Claim	9	For:~
 n't	RB	I-Claim	9	For:~
@@ -230,8 +230,8 @@ punishment	NN	I-Claim	9	For:~
 # paragraph 5
 # sent
 However	RB	O	~	~
-,	,	I-Premise	10	supports:12
-the	DT	I-Premise	10	supports:12
+,	,	O	~	~
+the	DT	B-Premise	10	supports:12
 jury	NN	I-Premise	10	supports:12
 giving	VBG	I-Premise	10	supports:12
 the	DT	I-Premise	10	supports:12
@@ -239,9 +239,9 @@ verdict	NN	I-Premise	10	supports:12
 are	VBP	I-Premise	10	supports:12
 also	RB	I-Premise	10	supports:12
 humans	NNS	I-Premise	10	supports:12
-.	.	I-Premise	11	supports:12
+.	.	O	~	~
 # sent
-They	PRP	I-Premise	11	supports:12
+They	PRP	B-Premise	11	supports:12
 have	VBP	I-Premise	11	supports:12
 the	DT	I-Premise	11	supports:12
 life	NN	I-Premise	11	supports:12
@@ -251,9 +251,9 @@ person	NN	I-Premise	11	supports:12
 at	IN	I-Premise	11	supports:12
 their	PRP$	I-Premise	11	supports:12
 discretion	NN	I-Premise	11	supports:12
-.	.	I-Claim	12	Against:~
+.	.	O	~	~
 # sent
-They	PRP	I-Claim	12	Against:~
+They	PRP	B-Claim	12	Against:~
 can	MD	I-Claim	12	Against:~
 make	VB	I-Claim	12	Against:~
 mistakes	NNS	I-Claim	12	Against:~
@@ -267,9 +267,9 @@ innocent	JJ	I-Claim	12	Against:~
 circumstantially	RB	I-Claim	12	Against:~
 marred	VBD	I-Claim	12	Against:~
 criminals	NNS	I-Claim	12	Against:~
-.	.	I-Premise	13	supports:12
+.	.	O	~	~
 # sent
-The	DT	I-Premise	13	supports:12
+The	DT	B-Premise	13	supports:12
 jury	NN	I-Premise	13	supports:12
 must	MD	I-Premise	13	supports:12
 therefore	RB	I-Premise	13	supports:12
@@ -287,8 +287,8 @@ crime	NN	I-Premise	13	supports:12
 # sent
 For	IN	O	~	~
 example	NN	O	~	~
-,	,	I-Premise	14	supports:13
-if	IN	I-Premise	14	supports:13
+,	,	O	~	~
+if	IN	B-Premise	14	supports:13
 an	DT	I-Premise	14	supports:13
 individual	JJ	I-Premise	14	supports:13
 murders	NNS	I-Premise	14	supports:13
@@ -303,9 +303,9 @@ crime	NN	I-Premise	14	supports:13
 is	VBZ	I-Premise	14	supports:13
 not	RB	I-Premise	14	supports:13
 heinous	JJ	I-Premise	14	supports:13
-.	.	I-Premise	15	supports:13
+.	.	O	~	~
 # sent
-Only	RB	I-Premise	15	supports:13
+Only	RB	B-Premise	15	supports:13
 deserving	JJ	I-Premise	15	supports:13
 criminals	NNS	I-Premise	15	supports:13
 ,	,	I-Premise	15	supports:13
@@ -323,10 +323,10 @@ subjected	VBN	I-Premise	15	supports:13
 to	TO	I-Premise	15	supports:13
 capital	JJ	I-Premise	15	supports:13
 punishment	NN	I-Premise	15	supports:13
-.	.	I-MajorClaim	16	~
+.	.	O	~	~
 # paragraph 6
 # sent
-Capital	NNP	I-MajorClaim	16	~
+Capital	NNP	B-MajorClaim	16	~
 punishment	NN	I-MajorClaim	16	~
 is	VBZ	I-MajorClaim	16	~
 essential	JJ	I-MajorClaim	16	~
@@ -342,7 +342,7 @@ I	PRP	O	~	~
 firmly	RB	O	~	~
 believe	VBP	O	~	~
 that	IN	O	~	~
-psychopaths	NNS	I-MajorClaim	17	~
+psychopaths	NNS	B-MajorClaim	17	~
 ,	,	I-MajorClaim	17	~
 terrorists	NNS	I-MajorClaim	17	~
 or	CC	I-MajorClaim	17	~
@@ -359,9 +359,9 @@ lives	NNS	I-MajorClaim	17	~
 deserve	VBP	I-MajorClaim	17	~
 capital	JJ	I-MajorClaim	17	~
 punishment	NN	I-MajorClaim	17	~
-.	.	I-Claim	18	For:~
+.	.	O	~	~
 # sent
-Capital	NNP	I-Claim	18	For:~
+Capital	NNP	B-Claim	18	For:~
 punishment	NN	I-Claim	18	For:~
 helps	VBZ	I-Claim	18	For:~
 to	TO	I-Claim	18	For:~

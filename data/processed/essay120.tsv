@@ -85,7 +85,7 @@ it	PRP	O	~	~
 is	VBZ	O	~	~
 recognized	VBN	O	~	~
 that	IN	O	~	~
-every	DT	I-Claim	1	For:~
+every	DT	B-Claim	1	For:~
 human	JJ	I-Claim	1	For:~
 being	NN	I-Claim	1	For:~
 has	VBZ	I-Claim	1	For:~
@@ -106,7 +106,7 @@ life	NN	I-Claim	1	For:~
 .	.	O	~	~
 # sent
 Although	IN	O	~	~
-what	WDT	I-Premise	2	attacks:1
+what	WDT	B-Premise	2	attacks:1
 criminals	NNS	I-Premise	2	attacks:1
 cause	VBP	I-Premise	2	attacks:1
 to	TO	I-Premise	2	attacks:1
@@ -122,8 +122,8 @@ is	VBZ	I-Premise	2	attacks:1
 indeed	RB	I-Premise	2	attacks:1
 significantly	RB	I-Premise	2	attacks:1
 offensive	JJ	I-Premise	2	attacks:1
-,	,	I-Premise	3	attacks:2
-they	PRP	I-Premise	3	attacks:2
+,	,	O	~	~
+they	PRP	B-Premise	3	attacks:2
 are	VBP	I-Premise	3	attacks:2
 humans	NNS	I-Premise	3	attacks:2
 and	CC	I-Premise	3	attacks:2
@@ -137,8 +137,8 @@ valued	VBN	I-Premise	3	attacks:2
 # sent
 In	IN	O	~	~
 addition	NN	O	~	~
-,	,	I-Premise	4	supports:1
-execution	NN	I-Premise	4	supports:1
+,	,	O	~	~
+execution	NN	B-Premise	4	supports:1
 does	VBZ	I-Premise	4	supports:1
 not	RB	I-Premise	4	supports:1
 resolve	VB	I-Premise	4	supports:1
@@ -150,7 +150,7 @@ crime	NN	I-Premise	4	supports:1
 not	RB	O	~	~
 to	TO	O	~	~
 mention	VB	O	~	~
-it	PRP	I-Premise	5	supports:1
+it	PRP	B-Premise	5	supports:1
 could	MD	I-Premise	5	supports:1
 put	VB	I-Premise	5	supports:1
 the	DT	I-Premise	5	supports:1
@@ -176,8 +176,8 @@ consoled	VBN	I-Premise	5	supports:1
 # paragraph 3
 # sent
 Secondly	RB	O	~	~
-,	,	I-Claim	6	For:~
-capital	JJ	I-Claim	6	For:~
+,	,	O	~	~
+capital	JJ	B-Claim	6	For:~
 punishment	NN	I-Claim	6	For:~
 is	VBZ	I-Claim	6	For:~
 certainly	RB	I-Claim	6	For:~
@@ -213,8 +213,8 @@ lives	NNS	I-Claim	6	For:~
 .	.	O	~	~
 # sent
 Moreover	RB	O	~	~
-,	,	I-Premise	7	supports:6
-in	IN	I-Premise	7	supports:6
+,	,	O	~	~
+in	IN	B-Premise	7	supports:6
 terms	NNS	I-Premise	7	supports:6
 of	IN	I-Premise	7	supports:6
 punishment	NN	I-Premise	7	supports:6
@@ -251,10 +251,10 @@ being	VBG	I-Premise	7	supports:6
 killed	VBN	I-Premise	7	supports:6
 right	RB	I-Premise	7	supports:6
 away	RB	I-Premise	7	supports:6
-.	.	I-Claim	8	For:~
+.	.	O	~	~
 # paragraph 4
 # sent
-The	DT	I-Claim	8	For:~
+The	DT	B-Claim	8	For:~
 third	JJ	I-Claim	8	For:~
 reason	NN	I-Claim	8	For:~
 why	WRB	I-Claim	8	For:~
@@ -273,9 +273,9 @@ people	NNS	I-Claim	8	For:~
 are	VBP	I-Claim	8	For:~
 wrongly	RB	I-Claim	8	For:~
 convicted	VBN	I-Claim	8	For:~
-.	.	I-Premise	9	supports:10
+.	.	O	~	~
 # sent
-Juries	NNS	I-Premise	9	supports:10
+Juries	NNS	B-Premise	9	supports:10
 are	VBP	I-Premise	9	supports:10
 also	RB	I-Premise	9	supports:10
 humans	NNS	I-Premise	9	supports:10
@@ -288,8 +288,8 @@ discretion	NN	I-Premise	9	supports:10
 .	.	O	~	~
 # sent
 Thus	RB	O	~	~
-,	,	I-Premise	10	supports:8
-many	JJ	I-Premise	10	supports:8
+,	,	O	~	~
+many	JJ	B-Premise	10	supports:8
 people	NNS	I-Premise	10	supports:8
 are	VBP	I-Premise	10	supports:8
 executed	VBN	I-Premise	10	supports:8
@@ -318,7 +318,7 @@ In	IN	O	~	~
 conclusion	NN	O	~	~
 ,	,	O	~	~
 although	IN	O	~	~
-capital	JJ	I-Claim	11	Against:~
+capital	JJ	B-Claim	11	Against:~
 punishment	NN	I-Claim	11	Against:~
 presents	VBZ	I-Claim	11	Against:~
 an	DT	I-Claim	11	Against:~
@@ -334,7 +334,7 @@ object	VBP	O	~	~
 to	TO	O	~	~
 it	PRP	O	~	~
 because	IN	O	~	~
-it	PRP	I-MajorClaim	12	~
+it	PRP	B-MajorClaim	12	~
 is	VBZ	I-MajorClaim	12	~
 absurd	JJ	I-MajorClaim	12	~
 and	CC	I-MajorClaim	12	~
@@ -342,8 +342,8 @@ inhumane	NN	I-MajorClaim	12	~
 .	.	O	~	~
 # sent
 Furthermore	RB	O	~	~
-,	,	I-Claim	13	For:~
-it	PRP	I-Claim	13	For:~
+,	,	O	~	~
+it	PRP	B-Claim	13	For:~
 can	MD	I-Claim	13	For:~
 be	VB	I-Claim	13	For:~
 replaced	VBN	I-Claim	13	For:~

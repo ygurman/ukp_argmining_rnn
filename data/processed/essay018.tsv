@@ -286,7 +286,7 @@ I	PRP	O	~	~
 strongly	RB	O	~	~
 believe	VBP	O	~	~
 that	IN	O	~	~
-universities	NNS	I-MajorClaim	13	~
+universities	NNS	B-MajorClaim	13	~
 must	MD	I-MajorClaim	13	~
 open	VB	I-MajorClaim	13	~
 choice	NN	I-MajorClaim	13	~
@@ -296,9 +296,9 @@ to	TO	I-MajorClaim	13	~
 select	VB	I-MajorClaim	13	~
 his	PRP$	I-MajorClaim	13	~
 subject	NN	I-MajorClaim	13	~
-.	.	B-Premise	14	supports:17
+.	.	O	~	~
 # sent
-Our	PRP$	I-Premise	14	supports:17
+Our	PRP$	B-Premise	14	supports:17
 youth	NN	I-Premise	14	supports:17
 has	VBZ	I-Premise	14	supports:17
 become	VBN	I-Premise	14	supports:17
@@ -307,9 +307,9 @@ confident	JJ	I-Premise	14	supports:17
 towards	IN	I-Premise	14	supports:17
 his	PRP$	I-Premise	14	supports:17
 career	NN	I-Premise	14	supports:17
-.	.	B-Premise	15	supports:17
+.	.	O	~	~
 # sent
-They	PRP	I-Premise	15	supports:17
+They	PRP	B-Premise	15	supports:17
 are	VBP	I-Premise	15	supports:17
 not	RB	I-Premise	15	supports:17
 ready	JJ	I-Premise	15	supports:17
@@ -319,9 +319,9 @@ bound	VBN	I-Premise	15	supports:17
 in	IN	I-Premise	15	supports:17
 certain	JJ	I-Premise	15	supports:17
 limitations	NNS	I-Premise	15	supports:17
-.	.	B-Premise	16	supports:17
+.	.	O	~	~
 # sent
-Female	JJ	I-Premise	16	supports:17
+Female	JJ	B-Premise	16	supports:17
 candidates	NNS	I-Premise	16	supports:17
 also	RB	I-Premise	16	supports:17
 do	VBP	I-Premise	16	supports:17
@@ -340,7 +340,7 @@ employer	NN	I-Premise	16	supports:17
 .	.	O	~	~
 # sent
 So	IN	O	~	~
-we	PRP	I-Claim	17	For:~
+we	PRP	B-Claim	17	For:~
 must	MD	I-Claim	17	For:~
 give	VB	I-Claim	17	For:~
 them	PRP	I-Claim	17	For:~
