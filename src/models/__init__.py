@@ -332,11 +332,10 @@ class BlandRelationClassifier(nn.Module):
         lstm2_out, self.hidden2 = self.lstm2(ab.view(ab.size(0),self.batch_size,-1),self.hidden2)
 
         # pass through second linear layer with ReLU activation
-        ab = F.relu(self.fc1(lstm2_out.view(len(ab),-1)))
+        ab = F.relu(self.fc1(lstm2_out.view(len(ab),-1).sum(dim=0)))
 
-        # flatten (by mean) to hidden dimension and pass through last liner layer for mapping with logsoftmax
-        ab = F.relu(self.fc2(ab))
-        ab = ab.mean(dim=0)
+        # flatten (by summation) to hidden dimension and pass through last liner layer for mapping with logsoftmax
+        ab = ab.sum(dim=0)
 
         tag_scores = F.log_softmax(ab.view(self.rel_tagset_size,-1))
 
